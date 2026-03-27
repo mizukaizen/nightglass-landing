@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service — nightglass</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #0a0a0f;
+      color: #b0b0c0;
+      line-height: 1.75;
+      font-size: 15px;
+    }
+    a { color: #8b7bf7; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    nav .logo {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    nav .links a {
+      color: #888;
+      font-size: 14px;
+      margin-left: 24px;
+    }
+    nav .links a:hover { color: #fff; }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 60px 24px 120px;
+    }
+    h1 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-weight: 400;
+      font-size: 42px;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .effective {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 48px;
+    }
+    h2 {
+      font-family: 'Inter', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: #e0e0f0;
+      margin: 40px 0 12px;
+    }
+    p, li { margin-bottom: 12px; }
+    ul { padding-left: 20px; margin-bottom: 16px; }
+    li { margin-bottom: 6px; }
+    .highlight {
+      background: rgba(139,123,247,0.08);
+      border-left: 3px solid #8b7bf7;
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .warning {
+      background: rgba(247,180,123,0.08);
+      border-left: 3px solid #f7b47b;
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    footer {
+      text-align: center;
+      padding: 40px 24px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-size: 13px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/" class="logo">nightglass</a>
+    <div class="links">
+      <a href="/docs">Docs</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Terms of Service</h1>
+    <p class="effective">Effective: 27 March 2026 &middot; Last updated: 27 March 2026</p>
+
+    <p>These terms govern your use of the nightglass screenshot API and related services ("Service") operated by Melis AI ("we", "us", "our"), an Australian entity. By using the Service, you agree to these terms. If you do not agree, do not use the Service.</p>
+
+    <h2>1. The Service</h2>
+
+    <p>nightglass provides a screenshot API that captures images of web pages, generates browser mockups, converts HTML to images, and extracts page metadata. The Service is available via two paths:</p>
+
+    <ul>
+      <li><strong>API key path:</strong> Create an account, get an API key, maintain a prepaid balance, and authenticate requests with your key.</li>
+      <li><strong>x402 agent path:</strong> Call the API without authentication. Receive a 402 response with payment details. Pay via USDC on the Base network. Receive your screenshot. No account required.</li>
+    </ul>
+
+    <h2>2. Who can use nightglass</h2>
+
+    <p>You must be at least 18 years old and have the legal capacity to enter into a binding agreement. If you use the Service on behalf of an organisation, you represent that you have authority to bind that organisation to these terms.</p>
+
+    <p><strong>Agent operators:</strong> If you operate an AI agent that uses nightglass (via x402 or API key), you are the responsible party. You are liable for all requests made by your agent and must ensure your agent complies with these terms.</p>
+
+    <h2>3. Acceptable use</h2>
+
+    <p>You may use nightglass for any lawful purpose. You must not:</p>
+
+    <ul>
+      <li>Capture screenshots of content that is illegal in your jurisdiction or ours (Australia)</li>
+      <li>Use the Service to capture child sexual abuse material (CSAM) — we will report this to authorities</li>
+      <li>Use the Service to facilitate phishing, fraud, impersonation, or social engineering</li>
+      <li>Attempt to circumvent rate limits, authentication, or payment mechanisms</li>
+      <li>Reverse-engineer, decompile, or extract source code from the Service</li>
+      <li>Resell the Service itself (you may use screenshots in your own products)</li>
+      <li>Overwhelm the Service with requests designed to degrade performance for others</li>
+      <li>Use the Service to systematically scrape or archive websites in violation of those sites' terms</li>
+    </ul>
+
+    <p>We reserve the right to suspend or terminate access for violations without notice.</p>
+
+    <h2>4. Pricing and payment</h2>
+
+    <p><strong>Pay-per-call pricing.</strong> You pay for each API call at the published rate. Current rates are listed at <a href="https://nightglass.xyz">nightglass.xyz</a>. We may change pricing with 14 days' notice to account holders. x402 pricing is embedded in each 402 response.</p>
+
+    <p><strong>API key path (Stripe).</strong> Your balance is prepaid. When your balance drops below $1, auto top-up may be triggered if enabled. Payments are processed by Stripe. All top-ups are non-refundable except where required by Australian Consumer Law or other applicable consumer protection legislation.</p>
+
+    <p><strong>x402 agent path (USDC).</strong> Payments are made in USDC on the Base network. Transactions are on-chain and final. We do not custody your funds — payment is verified on-chain and the screenshot is returned. Crypto payments are non-refundable by nature of the blockchain.</p>
+
+    <p><strong>Free tier.</strong> New accounts receive 50 free screenshots. Free credits have no expiry but cannot be transferred or redeemed for cash.</p>
+
+    <div class="highlight">nightglass does not provide refunds for API calls that return valid responses, even if the screenshot does not meet your expectations. If the Service fails to return a response (5xx error), your balance is not charged.</div>
+
+    <h2>5. Ownership of screenshots</h2>
+
+    <p>You own the screenshots generated through your use of the Service. We claim no intellectual property rights over the images we generate for you.</p>
+
+    <p>However, the content depicted in screenshots belongs to the respective website owners. Your use of screenshots must comply with the intellectual property rights of the original content owners. nightglass is not responsible for copyright claims arising from your use of screenshots.</p>
+
+    <h2>6. Service availability</h2>
+
+    <p>We aim for high availability but do not guarantee uptime. The Service may be temporarily unavailable for maintenance, updates, or circumstances beyond our control. We will make reasonable efforts to provide advance notice of planned downtime.</p>
+
+    <p>We do not offer an SLA at this time. If this changes, it will be documented separately.</p>
+
+    <h2>7. Rate limits</h2>
+
+    <p>The Service is rate-limited to 10 requests per second per API key. Exceeding this limit will result in 429 (Too Many Requests) responses. We may adjust rate limits to protect service stability. Persistent abuse of rate limits may result in account suspension.</p>
+
+    <h2>8. Data and privacy</h2>
+
+    <p>Our <a href="/privacy">Privacy Policy</a> explains what data we collect and how we handle it. By using the Service, you also agree to the Privacy Policy.</p>
+
+    <p><strong>Key point:</strong> We do not store your screenshots. Images are generated, returned in the API response, and immediately discarded from our servers.</p>
+
+    <h2>9. Liability limitations</h2>
+
+    <p>To the maximum extent permitted by law:</p>
+
+    <ul>
+      <li>The Service is provided "as is" and "as available" without warranties of any kind, express or implied.</li>
+      <li>We do not warrant that the Service will be uninterrupted, error-free, or free from harmful components.</li>
+      <li>We are not responsible for the content of websites you screenshot. We are a rendering tool, not a content provider.</li>
+      <li>Our total liability to you for any claim arising from the Service is limited to the amount you paid us in the 12 months preceding the claim, or AUD $100, whichever is greater.</li>
+      <li>We are not liable for indirect, incidental, special, consequential, or punitive damages, including lost profits, lost data, or business interruption.</li>
+    </ul>
+
+    <div class="warning">Nothing in these terms excludes or limits liability that cannot be excluded under Australian Consumer Law (Schedule 2 of the Competition and Consumer Act 2010), including consumer guarantees.</div>
+
+    <h2>10. Indemnification</h2>
+
+    <p>You agree to indemnify and hold harmless Melis AI and its officers, employees, and agents from any claims, damages, or expenses (including reasonable legal fees) arising from your use of the Service, your violation of these terms, or your violation of any third-party rights.</p>
+
+    <h2>11. Termination</h2>
+
+    <p>You may stop using the Service at any time. You may request account deletion by emailing <a href="mailto:support@melis.ai">support@melis.ai</a>.</p>
+
+    <p>We may suspend or terminate your access if you violate these terms, if required by law, or if we discontinue the Service. If we discontinue the Service, we will provide at least 30 days' notice to account holders with remaining balances and make reasonable efforts to facilitate balance refunds.</p>
+
+    <h2>12. Changes to these terms</h2>
+
+    <p>We may update these terms from time to time. Material changes will be communicated via email to account holders and posted on this page. Continued use after changes constitutes acceptance. If you disagree with changes, your remedy is to stop using the Service.</p>
+
+    <h2>13. Governing law and disputes</h2>
+
+    <p>These terms are governed by the laws of the State of Victoria, Australia. Any disputes will be subject to the non-exclusive jurisdiction of the courts of Victoria, Australia.</p>
+
+    <p>Before initiating formal proceedings, you agree to contact us at <a href="mailto:legal@melis.ai">legal@melis.ai</a> and attempt to resolve the dispute informally for at least 30 days.</p>
+
+    <h2>14. Severability</h2>
+
+    <p>If any provision of these terms is found to be unenforceable, the remaining provisions continue in full force. The unenforceable provision will be modified to the minimum extent necessary to make it enforceable.</p>
+
+    <h2>15. Entire agreement</h2>
+
+    <p>These terms, together with the Privacy Policy, constitute the entire agreement between you and Melis AI regarding the Service. They supersede any prior agreements or understandings.</p>
+
+    <h2>16. Contact</h2>
+
+    <p>
+      Melis AI<br>
+      Email: <a href="mailto:legal@melis.ai">legal@melis.ai</a><br>
+      Web: <a href="https://nightglass.xyz">nightglass.xyz</a>
+    </p>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 nightglass &middot; <a href="/">Home</a> &middot; <a href="/docs">Docs</a> &middot; <a href="/privacy">Privacy</a></p>
+  </footer>
+</body>
+</html>

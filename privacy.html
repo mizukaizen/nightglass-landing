@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — nightglass</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #0a0a0f;
+      color: #b0b0c0;
+      line-height: 1.75;
+      font-size: 15px;
+    }
+    a { color: #8b7bf7; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    nav .logo {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    nav .links a {
+      color: #888;
+      font-size: 14px;
+      margin-left: 24px;
+    }
+    nav .links a:hover { color: #fff; }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 60px 24px 120px;
+    }
+    h1 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-weight: 400;
+      font-size: 42px;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .effective {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 48px;
+    }
+    h2 {
+      font-family: 'Inter', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: #e0e0f0;
+      margin: 40px 0 12px;
+    }
+    p, li { margin-bottom: 12px; }
+    ul { padding-left: 20px; margin-bottom: 16px; }
+    li { margin-bottom: 6px; }
+    .highlight {
+      background: rgba(139,123,247,0.08);
+      border-left: 3px solid #8b7bf7;
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    footer {
+      text-align: center;
+      padding: 40px 24px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-size: 13px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/" class="logo">nightglass</a>
+    <div class="links">
+      <a href="/docs">Docs</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Privacy Policy</h1>
+    <p class="effective">Effective: 27 March 2026 &middot; Last updated: 27 March 2026</p>
+
+    <p>nightglass is operated by Melis AI ("we", "us", "our"), an Australian entity. This policy explains what data we collect when you use the nightglass screenshot API and related services at nightglass.xyz and api.nightglass.xyz, how we use it, and your rights.</p>
+
+    <h2>1. What we collect</h2>
+
+    <p><strong>Account data (human developer path).</strong> If you create an account via our dashboard, we collect your name, email address, and authentication identifiers through our auth provider (Clerk). We do not store passwords.</p>
+
+    <p><strong>Payment data.</strong> For Stripe top-ups, Stripe processes your card details directly — we never see or store your full card number. We store transaction amounts, timestamps, and Stripe customer IDs for billing records. For x402/USDC payments (agent path), transactions occur on the Base blockchain. We record the on-chain transaction hash and payment amount. Blockchain transactions are public by nature.</p>
+
+    <p><strong>API usage data.</strong> We log: API key used (hashed), endpoint called, timestamp, response status, and cost. We use this for billing, rate limiting, and abuse prevention.</p>
+
+    <p><strong>URLs submitted.</strong> We process the URLs you submit to generate screenshots. We do not permanently store the URLs or the generated screenshots — they are rendered, returned in the API response, and discarded.</p>
+
+    <div class="highlight">We do not store your screenshots. Images are generated on request, returned in the response, and immediately discarded from our servers.</div>
+
+    <p><strong>Technical data.</strong> IP addresses, user agent strings, and request headers are logged for security and abuse prevention. These logs are retained for 30 days and then deleted.</p>
+
+    <p><strong>Agent path (x402).</strong> If you use the x402 payment path, we do not collect any personal data. We verify on-chain payment and return the screenshot. No account, no email, no cookies.</p>
+
+    <h2>2. How we use your data</h2>
+
+    <ul>
+      <li>To provide the screenshot API service and process your requests</li>
+      <li>To bill you accurately and maintain your balance</li>
+      <li>To prevent abuse, enforce rate limits, and maintain service stability</li>
+      <li>To communicate service updates (account holders only — no marketing without consent)</li>
+      <li>To comply with legal obligations</li>
+    </ul>
+
+    <p>We do not sell your data. We do not use your data for advertising. We do not train AI models on your data.</p>
+
+    <h2>3. Third-party processors</h2>
+
+    <p>We use the following services to operate nightglass:</p>
+
+    <ul>
+      <li><strong>Clerk</strong> — authentication and user management</li>
+      <li><strong>Stripe</strong> — payment processing (PCI DSS compliant)</li>
+      <li><strong>Neon</strong> — PostgreSQL database hosting (account data, usage logs)</li>
+      <li><strong>Hetzner</strong> — server infrastructure (Helsinki, Finland — EU jurisdiction)</li>
+      <li><strong>Vercel</strong> — landing page and static asset hosting</li>
+      <li><strong>Base network / xpay.sh</strong> — x402 payment verification (on-chain, no personal data)</li>
+    </ul>
+
+    <p>Each processor is bound by their own privacy policies and data processing agreements.</p>
+
+    <h2>4. Data retention</h2>
+
+    <ul>
+      <li><strong>Screenshots:</strong> Not retained. Generated and discarded immediately after response.</li>
+      <li><strong>Account data:</strong> Retained while your account is active. Deleted within 30 days of account closure upon request.</li>
+      <li><strong>Billing records:</strong> Retained for 7 years to comply with tax and accounting obligations.</li>
+      <li><strong>Technical logs (IPs, request metadata):</strong> 30 days.</li>
+      <li><strong>x402 transaction hashes:</strong> Retained for billing reconciliation. On-chain data is permanent and public by nature of the blockchain.</li>
+    </ul>
+
+    <h2>5. Your rights</h2>
+
+    <p>Depending on your jurisdiction, you may have the right to:</p>
+
+    <ul>
+      <li><strong>Access</strong> your personal data and request a copy</li>
+      <li><strong>Correct</strong> inaccurate information</li>
+      <li><strong>Delete</strong> your account and associated data</li>
+      <li><strong>Export</strong> your data in a portable format</li>
+      <li><strong>Object</strong> to processing or restrict how we use your data</li>
+      <li><strong>Withdraw consent</strong> where processing is based on consent</li>
+    </ul>
+
+    <p>To exercise any of these rights, email <a href="mailto:privacy@melis.ai">privacy@melis.ai</a>. We will respond within 30 days.</p>
+
+    <h2>6. International transfers</h2>
+
+    <p>Our servers are located in Helsinki, Finland (EU). If you access nightglass from outside the EU, your API requests are processed on EU infrastructure. Account data stored with third-party processors (Clerk, Stripe) may be processed in the United States under their respective data processing agreements and standard contractual clauses.</p>
+
+    <h2>7. Cookies</h2>
+
+    <p>The nightglass API does not use cookies. The dashboard (api.nightglass.xyz) uses essential authentication cookies set by Clerk to maintain your login session. We do not use analytics cookies, tracking cookies, or advertising cookies.</p>
+
+    <h2>8. Children</h2>
+
+    <p>nightglass is not directed at individuals under 18. We do not knowingly collect data from minors. If you believe a minor has provided us with personal data, contact us and we will delete it.</p>
+
+    <h2>9. Security</h2>
+
+    <p>We use HTTPS for all connections, encrypt data at rest, hash API keys (we cannot see your full key after creation), and restrict server access to authorised personnel. No system is perfectly secure — if you discover a vulnerability, please report it to <a href="mailto:security@melis.ai">security@melis.ai</a>.</p>
+
+    <h2>10. Changes to this policy</h2>
+
+    <p>We may update this policy from time to time. Material changes will be communicated via email to account holders and posted on this page with an updated "Last updated" date. Continued use of the service after changes constitutes acceptance.</p>
+
+    <h2>11. Applicable law</h2>
+
+    <p>This policy is governed by the laws of Australia, including the Privacy Act 1988 and Australian Privacy Principles (APPs). We also comply with the EU General Data Protection Regulation (GDPR) for EU/EEA users and the California Consumer Privacy Act (CCPA) for California residents.</p>
+
+    <h2>12. Contact</h2>
+
+    <p>For privacy enquiries, data requests, or complaints:</p>
+    <p>
+      Melis AI<br>
+      Email: <a href="mailto:privacy@melis.ai">privacy@melis.ai</a><br>
+      Web: <a href="https://nightglass.xyz">nightglass.xyz</a>
+    </p>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 nightglass &middot; <a href="/">Home</a> &middot; <a href="/docs">Docs</a> &middot; <a href="/terms">Terms</a></p>
+  </footer>
+</body>
+</html>
