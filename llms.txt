@@ -1,0 +1,39 @@
+# nightglass
+
+> Screenshot API for developers and AI agents. Send a URL, get a PNG. Half a cent per capture.
+
+nightglass is a pay-per-call screenshot API with two payment paths: API key (for human developers) and x402/USDC on Base (for AI agents, zero signup required).
+
+## API Endpoints
+
+- [Screenshot](https://api.nightglass.xyz/api/v1/screenshot): POST — capture any URL as PNG/JPEG. $0.005 per call.
+- [Mockup](https://api.nightglass.xyz/api/v1/screenshot): POST with style=mockup — screenshot with browser frame, gradient background, shadow. $0.01 per call.
+- [HTML to Screenshot](https://api.nightglass.xyz/api/v1/html-to-screenshot): POST — render raw HTML string as image. $0.005 per call.
+- [Metadata](https://api.nightglass.xyz/api/v1/metadata): POST — extract title, OG tags, favicon, theme colour. Free.
+- [Usage](https://api.nightglass.xyz/api/v1/usage): GET — check balance and request history. Free.
+- [Health](https://api.nightglass.xyz/api/v1/health): GET — renderer status. Free.
+
+## Agent Payments (x402)
+
+Agents can use nightglass without signup. Send a POST to any paid endpoint without an Authorization header. The API returns HTTP 402 with:
+- Wallet address (USDC on Base)
+- Price in millionths of USDC
+- Network: base
+- Facilitator: xpay.sh
+
+Any x402-compatible HTTP client pays automatically and receives the screenshot.
+
+## Pricing
+
+- Standard screenshot: $0.005
+- Mockup (browser frame): $0.01
+- HTML-to-screenshot: $0.005
+- Metadata extraction: Free
+- No subscriptions. No tiers. Pay per call.
+
+## Links
+
+- [Landing page](https://nightglass.xyz)
+- [API Documentation](https://api.nightglass.xyz/docs)
+- [Privacy Policy](https://nightglass.xyz/privacy)
+- [Terms of Service](https://nightglass.xyz/terms)
