@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script defer src="https://analytics.melis.ai/script.js" data-website-id="bbf3f9ba-7144-4252-8ea9-ebbdee6570d7"></script>
+<title>Visual regression testing with screenshots: a practical guide — nightglass</title>
+<meta name="description" content="Set up visual regression testing to catch CSS bugs before they reach production.">
+<meta property="og:title" content="Visual regression testing with screenshots: a practical guide — nightglass">
+<meta property="og:description" content="Set up visual regression testing to catch CSS bugs before they reach production.">
+<meta property="og:url" content="https://nightglass.xyz/blog/visual-regression-testing-screenshots">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://nightglass.xyz/images/visual-regression-testing-screenshots.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nightglass.xyz/images/visual-regression-testing-screenshots.png">
+<link rel="canonical" href="https://nightglass.xyz/blog/visual-regression-testing-screenshots">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #030305; --surface: rgba(12, 12, 18, 0.6); --surface-solid: #0a0a10;
+    --glass: rgba(15, 15, 22, 0.45); --glass-border: rgba(255, 255, 255, 0.06);
+    --accent: #6C5CE7; --accent-dim: rgba(108, 92, 231, 0.15);
+    --green: #00D68F; --red: #f87171; --yellow: #fbbf24;
+    --text: #E8E8E4; --text2: rgba(255,255,255,0.45); --text3: rgba(255,255,255,0.2);
+    --code-bg: rgba(5, 5, 10, 0.8);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
+    background: radial-gradient(ellipse 900px 700px at 15% 15%, rgba(108,92,231,0.08) 0%, transparent 55%),
+      radial-gradient(ellipse 600px 500px at 85% 25%, rgba(180,80,50,0.04) 0%, transparent 50%),
+      radial-gradient(ellipse 700px 400px at 55% 85%, rgba(140,60,200,0.04) 0%, transparent 50%); }
+  nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 40px; background: rgba(3,3,5,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); }
+  nav .logo { font-family: 'DM Serif Display', serif; font-size: 1.25rem; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+  nav .logo img { width: 24px; height: 24px; }
+  nav .links { display: flex; gap: 28px; align-items: center; }
+  nav .links a { color: var(--text2); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+  nav .links a:hover { color: var(--text); }
+  nav .links a.cta { background: var(--accent); color: white; padding: 8px 18px; border-radius: 8px; font-weight: 600; }
+  .page-wrapper { max-width: 840px; margin: 0 auto; padding: 60px 24px 100px; }
+  .page-wrapper.wide { max-width: 1100px; }
+  h1 { font-family: 'DM Serif Display', serif; font-size: 2.5rem; font-weight: 400; margin-bottom: 16px; line-height: 1.2; }
+  h2 { font-family: 'DM Serif Display', serif; font-size: 1.6rem; font-weight: 400; margin-top: 48px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--glass-border); }
+  h3 { font-size: 1.15rem; font-weight: 600; margin-top: 32px; margin-bottom: 12px; color: var(--text); }
+  p { margin-bottom: 16px; color: rgba(255,255,255,0.75); }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .subtitle { font-size: 1.1rem; color: var(--text2); margin-bottom: 12px; }
+  strong { color: var(--text); font-weight: 600; }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; background: var(--code-bg); padding: 2px 7px; border-radius: 4px; color: #c4b5fd; }
+  pre { background: var(--code-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 20px 24px; overflow-x: auto; margin: 20px 0 24px; line-height: 1.5; }
+  pre code { background: none; padding: 0; font-size: 0.875rem; color: #d4d4d8; }
+  .code-label { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text3); margin-bottom: -12px; display: block; text-transform: uppercase; letter-spacing: 0.05em; }
+  table { width: 100%; border-collapse: collapse; margin: 20px 0 28px; }
+  th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--glass-border); font-size: 0.9rem; }
+  th { color: var(--text2); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  td { color: rgba(255,255,255,0.7); }
+  td code { font-size: 0.82rem; }
+  .callout { border-left: 3px solid var(--accent); background: var(--accent-dim); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 24px 0; }
+  .callout p { margin-bottom: 0; color: rgba(255,255,255,0.8); }
+  .callout.warn { border-left-color: var(--yellow); background: rgba(251,191,36,0.08); }
+  .callout.success { border-left-color: var(--green); background: rgba(0,214,143,0.08); }
+  ul, ol { margin: 12px 0 20px 24px; color: rgba(255,255,255,0.75); }
+  li { margin-bottom: 8px; }
+  .hero-img { width: 100%; border-radius: 12px; margin-bottom: 32px; }
+  .post-meta { color: var(--text3); font-size: 0.85rem; margin-bottom: 40px; }
+  .blog-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; transition: border-color 0.2s; text-decoration: none; display: block; }
+  .blog-card:hover { border-color: rgba(108,92,231,0.3); text-decoration: none; }
+  .blog-card img { width: 100%; height: 180px; object-fit: cover; }
+  .blog-card .card-body { padding: 20px; }
+  .blog-card h3 { margin: 0 0 8px; font-size: 1.05rem; color: var(--text); }
+  .blog-card p { margin: 0 0 12px; font-size: 0.85rem; color: var(--text2); }
+  .blog-card .meta { font-size: 0.75rem; color: var(--text3); }
+  .blog-card .tag { font-size: 0.7rem; font-weight: 600; color: var(--accent); background: var(--accent-dim); padding: 2px 8px; border-radius: 20px; margin-right: 6px; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; margin: 32px 0; }
+  footer { text-align: center; padding: 40px 24px; border-top: 1px solid var(--glass-border); color: var(--text3); font-size: 0.85rem; }
+  footer a { color: var(--text2); }
+  @media (max-width: 768px) { nav { padding: 14px 20px; } nav .links { gap: 16px; } h1 { font-size: 1.8rem; } .card-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="/"><img src="/favicon.svg" alt="">nightglass</a>
+  <div class="links">
+    <a href="/docs">Docs</a>
+    <a href="/blog" class="active">Blog</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="https://api.nightglass.xyz/dashboard" class="cta">Dashboard</a>
+  </div>
+</nav>
+<div class="page-wrapper">
+<img class="hero-img" src="/images/visual-regression-testing-screenshots.png" alt="Visual regression testing with screenshots: a practical guide">
+
+<h1>Visual regression testing with screenshots: a practical guide</h1>
+<p class="subtitle">Catch CSS bugs before your users do.</p>
+<p class="post-meta">March 28, 2026 · 9 min read</p>
+
+<p>Visual regression testing (VRT) compares screenshots of your UI before and after code changes to detect unintended visual differences. A unit test tells you a function returns the right value. A visual test tells you the button didn't shift 3 pixels to the left and overlap the form.</p>
+
+<h2>Why visual testing matters</h2>
+<p>CSS is global and cascading by design. Changing a margin in one place can affect layout in ten other places. No amount of unit or integration testing catches this — you need pixel-level comparison. VRT is particularly valuable when you're refactoring CSS, updating dependencies (especially component libraries), making "small" layout changes that could cascade, and working in a large codebase where CSS side effects are hard to predict.</p>
+
+<h2>How it works</h2>
+<p>The basic VRT flow is: capture baseline screenshots of your UI in a known-good state, make code changes, capture new screenshots, diff the baseline against the new screenshots pixel-by-pixel, and flag any differences for human review.</p>
+
+<h2>Tools</h2>
+
+<h3>Playwright built-in visual comparisons</h3>
+<p>Playwright has VRT built into its test runner. No extra dependencies:</p>
+<pre><code>import { test, expect } from '@playwright/test';
+
+test('homepage visual test', async ({ page }) => {
+  await page.goto('https://localhost:3000');
+  await expect(page).toHaveScreenshot('homepage.png', {
+    maxDiffPixelRatio: 0.01, // Allow 1% pixel difference
+  });
+});</code></pre>
+<p>On first run, it saves the baseline. On subsequent runs, it compares against the baseline and fails if the diff exceeds the threshold. Baselines are committed to git so the whole team shares them.</p>
+
+<h3>Percy (BrowserStack)</h3>
+<p>Percy is a cloud-based VRT service. It captures screenshots across multiple browsers and viewports, uses visual AI to filter out noise (animations, dynamic content), and provides a web UI for reviewing diffs. More powerful than DIY, but costs money and adds a CI dependency.</p>
+
+<h3>BackstopJS</h3>
+<p>Open-source, config-driven VRT. You define scenarios (URL + viewport combos) in a JSON file, and BackstopJS captures and diffs screenshots. Good for static sites or pages that don't require authentication.</p>
+
+<h2>Setting up VRT with Playwright</h2>
+<pre><code>// playwright.config.ts
+export default {
+  expect: {
+    toHaveScreenshot: {
+      maxDiffPixelRatio: 0.01,
+      animations: 'disabled', // Freeze animations
+    },
+  },
+  use: {
+    viewport: { width: 1280, height: 720 },
+    screenshot: 'only-on-failure',
+  },
+};</code></pre>
+
+<h3>Updating baselines</h3>
+<p>When you intentionally change the UI, update baselines:</p>
+<pre><code>npx playwright test --update-snapshots</code></pre>
+<p>Review the diff before committing. Never blindly update baselines — that defeats the purpose.</p>
+
+<h2>Dealing with flaky tests</h2>
+<p>VRT flakiness comes from: animations and transitions (disable them in test mode), dynamic content like timestamps and ads (mock or hide them), font loading (wait for <code>document.fonts.ready</code>), and anti-aliasing differences across OS/GPU.</p>
+<p>The <code>maxDiffPixelRatio</code> threshold is your friend. A ratio of 0.01 (1%) absorbs anti-aliasing differences while still catching real regressions. Tune it for your codebase.</p>
+
+<h2>CI integration</h2>
+<p>VRT should run in CI on every PR. Playwright in CI needs a consistent environment (same OS, same fonts) to produce deterministic screenshots. Docker is the answer:</p>
+<pre><code># In your CI workflow:
+docker run --rm -v $(pwd):/app -w /app mcr.microsoft.com/playwright:latest \
+  npx playwright test</code></pre>
+<p>Microsoft publishes official Playwright Docker images with all dependencies pre-installed.</p>
+
+<h2>Beyond CI: production monitoring</h2>
+<p>VRT in CI catches regressions before they merge. But what about third-party changes, CDN issues, or A/B tests that break layout in production? For that, you need periodic screenshot monitoring — capture production pages on a schedule and diff against known-good baselines.</p>
+<p>A <a href="/docs/quickstart">screenshot API</a> is ideal for this — call it from a cron job, compare the result against the last capture, and alert if the diff exceeds a threshold. See <a href="/blog/website-monitoring-screenshot-changes">website monitoring with screenshots</a> for the full architecture.</p>
+
+</div>
+<footer>
+  <p>&copy; 2026 nightglass &middot; <a href="/docs">Docs</a> &middot; <a href="/blog">Blog</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></p>
+</footer>
+</body>
+</html>

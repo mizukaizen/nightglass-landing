@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script defer src="https://analytics.melis.ai/script.js" data-website-id="bbf3f9ba-7144-4252-8ea9-ebbdee6570d7"></script>
+<title>How to take screenshots with Puppeteer: complete guide — nightglass</title>
+<meta name="description" content="Full Puppeteer screenshot tutorial with code examples for every capture method.">
+<meta property="og:title" content="How to take screenshots with Puppeteer: complete guide — nightglass">
+<meta property="og:description" content="Full Puppeteer screenshot tutorial with code examples for every capture method.">
+<meta property="og:url" content="https://nightglass.xyz/blog/puppeteer-screenshot-tutorial">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://nightglass.xyz/images/puppeteer-screenshot-tutorial.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nightglass.xyz/images/puppeteer-screenshot-tutorial.png">
+<link rel="canonical" href="https://nightglass.xyz/blog/puppeteer-screenshot-tutorial">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #030305; --surface: rgba(12, 12, 18, 0.6); --surface-solid: #0a0a10;
+    --glass: rgba(15, 15, 22, 0.45); --glass-border: rgba(255, 255, 255, 0.06);
+    --accent: #6C5CE7; --accent-dim: rgba(108, 92, 231, 0.15);
+    --green: #00D68F; --red: #f87171; --yellow: #fbbf24;
+    --text: #E8E8E4; --text2: rgba(255,255,255,0.45); --text3: rgba(255,255,255,0.2);
+    --code-bg: rgba(5, 5, 10, 0.8);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
+    background: radial-gradient(ellipse 900px 700px at 15% 15%, rgba(108,92,231,0.08) 0%, transparent 55%),
+      radial-gradient(ellipse 600px 500px at 85% 25%, rgba(180,80,50,0.04) 0%, transparent 50%),
+      radial-gradient(ellipse 700px 400px at 55% 85%, rgba(140,60,200,0.04) 0%, transparent 50%); }
+  nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 40px; background: rgba(3,3,5,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); }
+  nav .logo { font-family: 'DM Serif Display', serif; font-size: 1.25rem; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+  nav .logo img { width: 24px; height: 24px; }
+  nav .links { display: flex; gap: 28px; align-items: center; }
+  nav .links a { color: var(--text2); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+  nav .links a:hover { color: var(--text); }
+  nav .links a.cta { background: var(--accent); color: white; padding: 8px 18px; border-radius: 8px; font-weight: 600; }
+  .page-wrapper { max-width: 840px; margin: 0 auto; padding: 60px 24px 100px; }
+  .page-wrapper.wide { max-width: 1100px; }
+  h1 { font-family: 'DM Serif Display', serif; font-size: 2.5rem; font-weight: 400; margin-bottom: 16px; line-height: 1.2; }
+  h2 { font-family: 'DM Serif Display', serif; font-size: 1.6rem; font-weight: 400; margin-top: 48px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--glass-border); }
+  h3 { font-size: 1.15rem; font-weight: 600; margin-top: 32px; margin-bottom: 12px; color: var(--text); }
+  p { margin-bottom: 16px; color: rgba(255,255,255,0.75); }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .subtitle { font-size: 1.1rem; color: var(--text2); margin-bottom: 12px; }
+  strong { color: var(--text); font-weight: 600; }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; background: var(--code-bg); padding: 2px 7px; border-radius: 4px; color: #c4b5fd; }
+  pre { background: var(--code-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 20px 24px; overflow-x: auto; margin: 20px 0 24px; line-height: 1.5; }
+  pre code { background: none; padding: 0; font-size: 0.875rem; color: #d4d4d8; }
+  .code-label { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text3); margin-bottom: -12px; display: block; text-transform: uppercase; letter-spacing: 0.05em; }
+  table { width: 100%; border-collapse: collapse; margin: 20px 0 28px; }
+  th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--glass-border); font-size: 0.9rem; }
+  th { color: var(--text2); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  td { color: rgba(255,255,255,0.7); }
+  td code { font-size: 0.82rem; }
+  .callout { border-left: 3px solid var(--accent); background: var(--accent-dim); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 24px 0; }
+  .callout p { margin-bottom: 0; color: rgba(255,255,255,0.8); }
+  .callout.warn { border-left-color: var(--yellow); background: rgba(251,191,36,0.08); }
+  .callout.success { border-left-color: var(--green); background: rgba(0,214,143,0.08); }
+  ul, ol { margin: 12px 0 20px 24px; color: rgba(255,255,255,0.75); }
+  li { margin-bottom: 8px; }
+  .hero-img { width: 100%; border-radius: 12px; margin-bottom: 32px; }
+  .post-meta { color: var(--text3); font-size: 0.85rem; margin-bottom: 40px; }
+  .blog-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; transition: border-color 0.2s; text-decoration: none; display: block; }
+  .blog-card:hover { border-color: rgba(108,92,231,0.3); text-decoration: none; }
+  .blog-card img { width: 100%; height: 180px; object-fit: cover; }
+  .blog-card .card-body { padding: 20px; }
+  .blog-card h3 { margin: 0 0 8px; font-size: 1.05rem; color: var(--text); }
+  .blog-card p { margin: 0 0 12px; font-size: 0.85rem; color: var(--text2); }
+  .blog-card .meta { font-size: 0.75rem; color: var(--text3); }
+  .blog-card .tag { font-size: 0.7rem; font-weight: 600; color: var(--accent); background: var(--accent-dim); padding: 2px 8px; border-radius: 20px; margin-right: 6px; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; margin: 32px 0; }
+  footer { text-align: center; padding: 40px 24px; border-top: 1px solid var(--glass-border); color: var(--text3); font-size: 0.85rem; }
+  footer a { color: var(--text2); }
+  @media (max-width: 768px) { nav { padding: 14px 20px; } nav .links { gap: 16px; } h1 { font-size: 1.8rem; } .card-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="/"><img src="/favicon.svg" alt="">nightglass</a>
+  <div class="links">
+    <a href="/docs">Docs</a>
+    <a href="/blog" class="active">Blog</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="https://api.nightglass.xyz/dashboard" class="cta">Dashboard</a>
+  </div>
+</nav>
+<div class="page-wrapper">
+<img class="hero-img" src="/images/puppeteer-screenshot-tutorial.png" alt="How to take screenshots with Puppeteer: complete guide">
+
+<h1>How to take screenshots with Puppeteer: complete guide</h1>
+<p class="subtitle">Everything you need to know about Puppeteer screenshot automation.</p>
+<p class="post-meta">March 28, 2026 · 10 min read</p>
+
+<p>Puppeteer is Google's Node.js library for controlling headless Chrome. It's been the go-to screenshot tool since 2017 and still powers a huge amount of browser automation. This guide covers every screenshot technique Puppeteer supports, with working code examples.</p>
+
+<h2>Setup</h2>
+<pre><code>npm install puppeteer</code></pre>
+<p>This installs Puppeteer and downloads a compatible Chromium binary (~170MB). If you want to use an existing Chrome installation instead:</p>
+<pre><code>npm install puppeteer-core</code></pre>
+<p>Then point it at your Chrome path when launching.</p>
+
+<h2>Basic screenshot</h2>
+<pre><code>import puppeteer from 'puppeteer';
+
+const browser = await puppeteer.launch();
+const page = await browser.newPage();
+await page.goto('https://example.com');
+await page.screenshot({ path: 'screenshot.png' });
+await browser.close();</code></pre>
+<p>Default viewport: 800×600. Default format: PNG. The screenshot captures exactly what you'd see in a browser window at that size.</p>
+
+<h2>Setting the viewport</h2>
+<pre><code>await page.setViewport({
+  width: 1440,
+  height: 900,
+  deviceScaleFactor: 2  // Retina
+});</code></pre>
+<p>Always set the viewport before navigating — some pages make layout decisions based on the initial viewport size. Setting it after <code>goto</code> triggers a re-layout, which is slower and can cause visual glitches.</p>
+
+<h2>Full-page capture</h2>
+<pre><code>await page.screenshot({
+  path: 'fullpage.png',
+  fullPage: true
+});</code></pre>
+<p>This scrolls the page internally and stitches the result into a single image. Same lazy loading caveats as Playwright — images below the fold may not load. Scroll the page first if this matters:</p>
+<pre><code>await page.evaluate(async () => {
+  await new Promise((resolve) => {
+    let totalHeight = 0;
+    const distance = 500;
+    const timer = setInterval(() => {
+      window.scrollBy(0, distance);
+      totalHeight += distance;
+      if (totalHeight >= document.body.scrollHeight) {
+        clearInterval(timer);
+        window.scrollTo(0, 0);
+        resolve();
+      }
+    }, 100);
+  });
+});</code></pre>
+
+<h2>Element screenshots</h2>
+<pre><code>const element = await page.$('.pricing-table');
+await element.screenshot({ path: 'pricing.png' });</code></pre>
+<p>Captures just the element's bounding box. Returns null if the selector doesn't match — always check for null in production code.</p>
+
+<h2>Wait strategies</h2>
+<p>Puppeteer's <code>page.goto()</code> accepts a <code>waitUntil</code> option:</p>
+<ul>
+  <li><code>'load'</code> — fires when the load event fires (default)</li>
+  <li><code>'domcontentloaded'</code> — fires when HTML is parsed</li>
+  <li><code>'networkidle0'</code> — no network connections for 500ms (strictest)</li>
+  <li><code>'networkidle2'</code> — max 2 network connections for 500ms (more lenient)</li>
+</ul>
+<pre><code>await page.goto(url, { waitUntil: 'networkidle0' });</code></pre>
+<p>For SPAs: use <code>networkidle0</code> plus <code>page.waitForSelector()</code> to wait for a specific element that signals the app is ready.</p>
+
+<h2>JPEG and quality control</h2>
+<pre><code>await page.screenshot({
+  path: 'compressed.jpg',
+  type: 'jpeg',
+  quality: 80
+});</code></pre>
+<p>JPEG quality 80 gives a good balance between file size and visual quality. Below 60 you'll see artifacts around text. Above 90 the file size gains are minimal.</p>
+
+<h2>Device emulation</h2>
+<p>Puppeteer ships with predefined device profiles:</p>
+<pre><code>import { KnownDevices } from 'puppeteer';
+const iPhone = KnownDevices['iPhone 14 Pro'];
+
+const page = await browser.newPage();
+await page.emulate(iPhone);
+await page.goto('https://example.com');
+await page.screenshot({ path: 'mobile.png' });</code></pre>
+<p>This sets viewport, user agent, DPR, and touch support to match the device. Useful for capturing mobile versions of sites.</p>
+
+<h2>Clip regions</h2>
+<pre><code>await page.screenshot({
+  clip: { x: 0, y: 0, width: 800, height: 400 }
+});</code></pre>
+
+<h2>Transparent backgrounds</h2>
+<pre><code>await page.screenshot({
+  path: 'transparent.png',
+  omitBackground: true
+});</code></pre>
+<p>Removes the default white background, producing a transparent PNG. Only works if the page itself has a transparent background — most don't.</p>
+
+<h2>PDF generation</h2>
+<p>Puppeteer can also generate PDFs (not just screenshots):</p>
+<pre><code>await page.pdf({
+  path: 'page.pdf',
+  format: 'A4',
+  printBackground: true,
+  margin: { top: '1cm', bottom: '1cm', left: '1cm', right: '1cm' }
+});</code></pre>
+<p>PDFs use the print stylesheet (<code>@media print</code>), so the output may look different from a screenshot.</p>
+
+<h2>Puppeteer vs Playwright</h2>
+<p>Puppeteer works, but if you're starting a new project, consider <a href="/blog/puppeteer-vs-playwright-screenshots">Playwright instead</a>. Playwright supports multiple browsers, has better auto-wait behaviour, and is more actively developed. The API is very similar — migration is straightforward.</p>
+
+<h2>Or skip the browser entirely</h2>
+<p>If you just need URL-to-image conversion without managing headless browsers, a <a href="/docs/quickstart">screenshot API</a> eliminates the infrastructure. nightglass runs Chromium on dedicated hardware and returns the image over HTTP — half a cent per capture, no browser to manage.</p>
+
+</div>
+<footer>
+  <p>&copy; 2026 nightglass &middot; <a href="/docs">Docs</a> &middot; <a href="/blog">Blog</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></p>
+</footer>
+</body>
+</html>
