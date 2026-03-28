@@ -325,9 +325,9 @@
 
 <h2>Playwright vs Puppeteer vs Selenium</h2>
 
-<p><strong>Playwright</strong> (Microsoft) is the current best choice for new projects. It supports Chromium, Firefox, and WebKit from a single API, has excellent auto-wait functionality, and offers Python, Node.js, Java, and .NET bindings. Browser management is built in — <code>playwright install</code> downloads the right browser version.</p>
+<p><strong>Playwright</strong> (Microsoft) is the current best choice for new projects. It supports Chromium, Firefox, and WebKit from a single API, has excellent auto-wait functionality, and offers Python, Node.js, Java, and .NET bindings. Browser management is built in — <code>playwright install</code> downloads the right browser version. See the <a href="/blog/playwright-screenshot-tutorial-nodejs">Playwright screenshot tutorial</a> for a Node.js walkthrough.</p>
 
-<p><strong>Puppeteer</strong> (Google) was the gold standard from 2017–2022. It's Chromium-only, which is fine for screenshots (Chromium rendering is what you want). The API is slightly lower-level than Playwright. Still maintained, still works, but Playwright has surpassed it in ergonomics and cross-browser support.</p>
+<p><strong>Puppeteer</strong> (Google) was the gold standard from 2017–2022. It's Chromium-only, which is fine for screenshots (Chromium rendering is what you want). The API is slightly lower-level than Playwright. Still maintained, still works, but Playwright has surpassed it in ergonomics and cross-browser support. The <a href="/blog/puppeteer-screenshot-tutorial">Puppeteer screenshot guide</a> covers the full API. For a direct comparison, see <a href="/blog/puppeteer-vs-playwright-screenshots">Puppeteer vs Playwright for screenshots</a>.</p>
 
 <p><strong>Selenium</strong> is the oldest option (2004) and the most painful to set up. WebDriver version management is a constant headache. Only use Selenium if you have an existing test suite built on it and don't want to migrate.</p>
 
@@ -356,7 +356,7 @@
 <p>Managing headless browsers in production is operational overhead. If any of these apply to you, consider a screenshot API instead:</p>
 
 <ul>
-  <li>You're running in a <strong>serverless environment</strong> (Lambda, Vercel, Cloudflare Workers) where you can't install Chromium</li>
+  <li>You're running in a <strong>serverless environment</strong> (Lambda, Vercel, Cloudflare Workers) where you can't install Chromium — <a href="/blog/serverless-screenshots-lambda-limitations">here's why serverless and headless browsers don't mix</a></li>
   <li>You need fewer than <strong>10,000 screenshots per month</strong> and your time is worth more than $50/month</li>
   <li>You don't want to deal with <strong>browser updates, security patches, and crash recovery</strong></li>
   <li>You need <strong>consistent rendering</strong> across environments (local dev, CI, production)</li>
@@ -365,7 +365,7 @@
 
 <p>At nightglass, a screenshot costs $0.005. For 10,000 screenshots, that's $50. If setting up and maintaining headless browser infrastructure would take you more than a few hours, the API is the cheaper option when you account for your time.</p>
 
-<p>For the full API reference, see the <a href="/docs/quickstart">quickstart guide</a>.</p>
+<p>Not sure which API to use? The <a href="/blog/screenshot-api-comparison-2026">2026 screenshot API comparison</a> breaks down the main players. For the full nightglass reference, see the <a href="/docs/quickstart">quickstart guide</a>.</p>
 </div>
 <footer>
   <p>&copy; 2026 nightglass &middot; <a href="/docs">Docs</a> &middot; <a href="/blog">Blog</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></p>

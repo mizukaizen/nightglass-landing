@@ -151,6 +151,7 @@
   <p><strong>The simple path:</strong> If you're under 50,000 screenshots/month, use an API. The engineering cost of building and maintaining screenshot infrastructure exceeds the API cost by a wide margin. <a href="/docs/quickstart">nightglass</a> handles the browsers, scaling, and reliability — you just send URLs and get images back.</p>
 </div>
 
+<p>If building a self-hosted service, start with the <a href="/blog/build-screenshot-microservice-nodejs">Node.js screenshot microservice guide</a>. Two common use cases for scale: <a href="/blog/website-monitoring-screenshot-changes">visual change monitoring</a> and <a href="/blog/visual-regression-testing-screenshots">visual regression testing</a>. Note: <a href="/blog/serverless-screenshots-lambda-limitations">serverless can't run headless browsers</a> — you need dedicated infra or an API at scale.</p>
 </div>
 <footer>
   <p>&copy; 2026 nightglass &middot; <a href="/docs">Docs</a> &middot; <a href="/blog">Blog</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></p>

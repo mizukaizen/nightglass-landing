@@ -224,7 +224,7 @@ func main() {
   <tr><td>rod</td><td>Simpler API, auto-downloads browser</td><td>Less community support than chromedp</td></tr>
   <tr><td>Screenshot API</td><td>URL-to-image without infra</td><td>External dependency, costs per call</td></tr>
 </table>
-<p>For most Go applications that just need URL-to-image conversion, the <a href="/docs/quickstart">API approach</a> is the path of least resistance.</p>
+<p>For most Go applications that just need URL-to-image, the <a href="/docs/quickstart">API approach</a> is the path of least resistance. Note: if deploying to serverless, running Chrome isn't possible — <a href="/blog/serverless-screenshots-lambda-limitations">see why</a>. For a broader overview, the <a href="/blog/headless-browser-screenshots-guide">complete headless browser guide</a> covers architecture and when self-hosting makes sense. Comparing APIs? <a href="/blog/screenshot-api-comparison-2026">2026 API comparison</a>.</p>
 
 </div>
 <footer>

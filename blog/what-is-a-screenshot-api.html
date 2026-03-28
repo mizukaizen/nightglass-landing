@@ -325,13 +325,13 @@
 
 <h2>The build-vs-buy calculus</h2>
 
-<p>Running headless Chromium yourself sounds straightforward until you actually do it. You need to manage browser installations, handle process crashes and zombie processes, deal with memory leaks (Chromium is notoriously hungry), configure sandboxing, keep the browser updated for security patches, and handle the thousand edge cases where pages behave differently — pop-ups, cookie banners, lazy loading, SPAs that take 10 seconds to hydrate.</p>
+<p>Running headless Chromium yourself sounds straightforward until you actually do it. You need to manage browser installations, handle process crashes and zombie processes, deal with memory leaks (Chromium is notoriously hungry), configure sandboxing, keep the browser updated for security patches, and handle the thousand edge cases where pages behave differently — pop-ups, cookie banners, lazy loading, SPAs that take 10 seconds to hydrate. There's a <a href="/blog/headless-browser-screenshots-guide">full breakdown of headless browser tradeoffs</a> if you want to go deep on the build path.</p>
 
 <p>If you need screenshots occasionally — say, fewer than a few hundred per day — a screenshot API eliminates all of that operational overhead for less than a dollar a day.</p>
 
 <h2>Common use cases</h2>
 
-<p>Screenshot APIs power more things than you'd expect. <strong>Link previews</strong> in chat apps, social platforms, and documentation tools — when you paste a URL and see a thumbnail, that's often a screenshot API behind the scenes. <strong>Social media cards</strong> for blogs and SaaS products that want custom OG images. <strong>Monitoring dashboards</strong> that capture visual snapshots of web pages to detect layout regressions. <strong>PDF generation</strong> for reports that need to include visual renders of web content. And increasingly, <strong>AI agent tooling</strong> — autonomous agents that need to "see" what a web page looks like.</p>
+<p>Screenshot APIs power more things than you'd expect. <a href="/blog/build-link-previews-for-your-app"><strong>Link previews</strong></a> in chat apps, social platforms, and documentation tools — when you paste a URL and see a thumbnail, that's often a screenshot API behind the scenes. <a href="/blog/generate-og-images-screenshot-api"><strong>Social media cards</strong></a> for blogs and SaaS products that want custom OG images. <a href="/blog/visual-regression-testing-screenshots"><strong>Monitoring dashboards</strong></a> that capture visual snapshots of web pages to detect layout regressions. <strong>PDF generation</strong> for reports that need to include visual renders of web content. And increasingly, <strong>AI agent tooling</strong> — autonomous agents that need to "see" what a web page looks like.</p>
 
 <h2>What to look for in a screenshot API</h2>
 
@@ -349,9 +349,11 @@
 
 <p>Here's where things get interesting. As AI agents become more autonomous, they need to consume APIs without human setup. An agent can't sign up for an account, enter a credit card, and retrieve an API key. It needs to discover an API, pay for it, and use it — all programmatically.</p>
 
-<p>Protocols like <a href="https://www.x402.org">x402</a> are making this possible. An agent calls an API, gets a 402 response with payment instructions, pays with stablecoin, and gets the result. No signup, no API key, no human in the loop.</p>
+<p>Protocols like <a href="https://www.x402.org">x402</a> are making this possible. An agent calls an API, gets a 402 response with payment instructions, pays with stablecoin, and gets the result. No signup, no API key, no human in the loop. See the <a href="/blog/x402-protocol-agent-payments-explained">full x402 explainer</a> for how the protocol flow works.</p>
 
-<p>This is the direction screenshot APIs (and all APIs) are heading. The ones that support agent-native payments will capture the next wave of API consumers — autonomous software that pays for the tools it needs.</p>
+<p>This is the direction screenshot APIs (and all APIs) are heading. The ones that support agent-native payments will capture the next wave of API consumers — autonomous software that pays for the tools it needs. More on this shift: <a href="/blog/agentic-commerce-ai-agents-api-consumers">the rise of agentic commerce</a>.</p>
+
+<p>If you're comparing options, the <a href="/blog/screenshot-api-comparison-2026">2026 screenshot API comparison</a> breaks down the main players on pricing, features, and agent support.</p>
 
 <h2>Getting started</h2>
 

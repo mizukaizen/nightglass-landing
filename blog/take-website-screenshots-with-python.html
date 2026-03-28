@@ -404,6 +404,7 @@ with open("screenshot.png", "wb") as f:
 <p><strong>Use a screenshot API</strong> if you just need URL-to-image conversion, you're running in serverless/constrained environments, or you don't want to manage headless browser infrastructure. At half a cent per screenshot, it's cheaper than your time debugging Chromium crashes.</p>
 
 <p><strong>Avoid Selenium</strong> for new projects unless you have a specific reason (e.g., existing Selenium test suite you want to reuse). Playwright does everything Selenium does, but better.</p>
+<p>For a deeper look at headless browser tradeoffs generally, see the <a href="/blog/headless-browser-screenshots-guide">complete headless browser guide</a>. If you're on serverless, <a href="/blog/serverless-screenshots-lambda-limitations">headless browsers won't work there</a>. Comparing APIs? The <a href="/blog/screenshot-api-comparison-2026">2026 comparison</a> covers the main players.</p>
 </div>
 <footer>
   <p>&copy; 2026 nightglass &middot; <a href="/docs">Docs</a> &middot; <a href="/blog">Blog</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></p>

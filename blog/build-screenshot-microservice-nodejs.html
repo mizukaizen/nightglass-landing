@@ -212,7 +212,7 @@ CMD ["node", "server.js"]</code></pre>
 
 <h2>What you still need to handle</h2>
 <p>This tutorial gives you a working service. For production, you also need: memory monitoring and browser restart on leak, SSRF protection (block requests to internal IPs), rate limiting, authentication, process crash recovery, log rotation, and security updates (Chromium vulnerabilities are frequent).</p>
-<p>Each of these is its own engineering project. If you'd rather just take screenshots without managing browser infrastructure, that's exactly what <a href="/docs/quickstart">nightglass</a> is for — half a cent per screenshot, no browser to manage, no Docker to deploy.</p>
+<p>If you'd rather just take screenshots without managing browser infrastructure, nightglass is for you — half a cent per screenshot. See the <a href="/blog/screenshot-api-pricing-compared">pricing comparison</a> to check build-vs-buy at your volume. To scale this service further, the <a href="/blog/automate-website-screenshots-at-scale">scale architecture guide</a> covers queue design. Note: this service won't work in serverless — see <a href="/blog/serverless-screenshots-lambda-limitations">why Lambda and Playwright don't mix</a>.</p>
 
 </div>
 <footer>

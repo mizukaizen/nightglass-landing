@@ -136,7 +136,7 @@ await browser.close();</code></pre>
   path: 'fullpage.png',
   fullPage: true
 });</code></pre>
-<p>Full-page captures stitch together the entire scroll height into a single image. Be aware: long pages produce large files. A page that scrolls for 10,000 pixels vertically at 2x DPR produces a 2880×20000 pixel image.</p>
+<p>Full-page captures stitch together the entire scroll height into a single image. Be aware: long pages produce large files. A page that scrolls for 10,000 pixels vertically at 2x DPR produces a 2880×20000 pixel image. There's a dedicated <a href="/blog/capture-full-page-screenshots-guide">full-page screenshots guide</a> that covers lazy loading, infinite scroll, and fixed headers.</p>
 
 <div class="callout warn">
   <p><strong>Lazy loading gotcha:</strong> Images below the fold won't load until scrolled into view. Before a full-page capture, scroll the page to trigger lazy loading, then scroll back to top. Playwright doesn't do this automatically.</p>
@@ -235,14 +235,14 @@ await browser.close();</code></pre>
 <p>Creating a new page is fast (~50ms). Launching a new browser is slow (~500ms). Reuse the browser.</p>
 
 <h2>When to use an API instead</h2>
-<p>Running Playwright yourself means managing Chromium binaries, handling crashes, dealing with memory leaks, and keeping the browser updated. If you need reliable screenshots without the operational overhead, a screenshot API handles all of this for you.</p>
+<p>Running Playwright yourself means managing Chromium binaries, handling crashes, dealing with memory leaks, and keeping the browser updated. If you need reliable screenshots without the operational overhead, a screenshot API handles all of this for you. This becomes especially clear when you try to run Playwright in a serverless environment — <a href="/blog/serverless-screenshots-lambda-limitations">it doesn't work</a>.</p>
 <p>With <a href="/docs/quickstart">nightglass</a>, the same screenshot is one HTTP request:</p>
 <pre><code>curl -X POST https://api.nightglass.xyz/api/v1/screenshot \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -d '{"url": "https://example.com", "width": 1440, "height": 900}' \
   --output screenshot.png</code></pre>
-<p>Half a cent per screenshot, no browser to manage. See the <a href="/docs/quickstart">quickstart guide</a>.</p>
+<p>Half a cent per screenshot, no browser to manage. Playwright also has excellent built-in <a href="/blog/visual-regression-testing-screenshots">visual regression testing</a> — if that's your use case, that guide covers the full workflow. For a comparison of options, see <a href="/blog/puppeteer-vs-playwright-screenshots">Puppeteer vs Playwright</a>.</p>
 
 </div>
 <footer>

@@ -161,7 +161,7 @@ docker run --rm -v $(pwd):/app -w /app mcr.microsoft.com/playwright:latest \
 
 <h2>Beyond CI: production monitoring</h2>
 <p>VRT in CI catches regressions before they merge. But what about third-party changes, CDN issues, or A/B tests that break layout in production? For that, you need periodic screenshot monitoring — capture production pages on a schedule and diff against known-good baselines.</p>
-<p>A <a href="/docs/quickstart">screenshot API</a> is ideal for this — call it from a cron job, compare the result against the last capture, and alert if the diff exceeds a threshold. See <a href="/blog/website-monitoring-screenshot-changes">website monitoring with screenshots</a> for the full architecture.</p>
+<p>A <a href="/docs/quickstart">screenshot API</a> is ideal for this — call it from a cron job, compare the result against the last capture, and alert if the diff exceeds a threshold. See <a href="/blog/website-monitoring-screenshot-changes">website monitoring with screenshots</a> for the full architecture. Running VRT at volume? The <a href="/blog/automate-website-screenshots-at-scale">scale guide</a> covers queue and worker patterns. For a deep dive into Playwright's screenshot capabilities, the <a href="/blog/playwright-screenshot-tutorial-nodejs">Playwright Node.js tutorial</a> covers all the options.</p>
 
 </div>
 <footer>

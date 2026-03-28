@@ -209,7 +209,7 @@ await page.screenshot({ path: 'mobile.png' });</code></pre>
 <p>Puppeteer works, but if you're starting a new project, consider <a href="/blog/puppeteer-vs-playwright-screenshots">Playwright instead</a>. Playwright supports multiple browsers, has better auto-wait behaviour, and is more actively developed. The API is very similar — migration is straightforward.</p>
 
 <h2>Or skip the browser entirely</h2>
-<p>If you just need URL-to-image conversion without managing headless browsers, a <a href="/docs/quickstart">screenshot API</a> eliminates the infrastructure. nightglass runs Chromium on dedicated hardware and returns the image over HTTP — half a cent per capture, no browser to manage.</p>
+<p>If you just need URL-to-image conversion without managing headless browsers, a screenshot API eliminates the infrastructure. nightglass runs Chromium on dedicated hardware — half a cent per capture, no browser to manage. See how it <a href="/blog/screenshot-api-pricing-compared">compares on price</a>, or check the <a href="/docs/quickstart">quickstart guide</a> to try it.</p><p>If you're running in Lambda or Vercel Functions: <a href="/blog/serverless-screenshots-lambda-limitations">headless browsers don't run in serverless environments</a>. For a broader look at Puppeteer vs alternatives, <a href="/blog/headless-browser-screenshots-guide">the complete headless browser guide</a> covers the tradeoffs.</p>
 
 </div>
 <footer>
