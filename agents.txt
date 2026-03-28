@@ -1,0 +1,11 @@
+name: nightglass
+description: Screenshot API — send a URL, get a PNG. Supports x402 agent payments (USDC on Base). No signup required for agents.
+url: https://nightglass.xyz
+api: https://api.nightglass.xyz
+documentation: https://api.nightglass.xyz/docs
+llms-txt: https://nightglass.xyz/llms.txt
+payment-protocol: x402
+payment-network: base
+payment-asset: USDC
+contact: hello@nightglass.xyz
+license: Commercial
