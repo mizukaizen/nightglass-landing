@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script defer src="https://analytics.melis.ai/script.js" data-website-id="bbf3f9ba-7144-4252-8ea9-ebbdee6570d7"></script>
+<title>How to capture full-page screenshots programmatically — nightglass</title>
+<meta name="description" content="Techniques for capturing entire scrollable web pages as a single image.">
+<meta property="og:title" content="How to capture full-page screenshots programmatically — nightglass">
+<meta property="og:description" content="Techniques for capturing entire scrollable web pages as a single image.">
+<meta property="og:url" content="https://nightglass.xyz/blog/capture-full-page-screenshots-guide">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://nightglass.xyz/images/capture-full-page-screenshots-guide.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nightglass.xyz/images/capture-full-page-screenshots-guide.png">
+<link rel="canonical" href="https://nightglass.xyz/blog/capture-full-page-screenshots-guide">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #030305; --surface: rgba(12, 12, 18, 0.6); --surface-solid: #0a0a10;
+    --glass: rgba(15, 15, 22, 0.45); --glass-border: rgba(255, 255, 255, 0.06);
+    --accent: #6C5CE7; --accent-dim: rgba(108, 92, 231, 0.15);
+    --green: #00D68F; --red: #f87171; --yellow: #fbbf24;
+    --text: #E8E8E4; --text2: rgba(255,255,255,0.45); --text3: rgba(255,255,255,0.2);
+    --code-bg: rgba(5, 5, 10, 0.8);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
+    background: radial-gradient(ellipse 900px 700px at 15% 15%, rgba(108,92,231,0.08) 0%, transparent 55%),
+      radial-gradient(ellipse 600px 500px at 85% 25%, rgba(180,80,50,0.04) 0%, transparent 50%),
+      radial-gradient(ellipse 700px 400px at 55% 85%, rgba(140,60,200,0.04) 0%, transparent 50%); }
+  nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 40px; background: rgba(3,3,5,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); }
+  nav .logo { font-family: 'DM Serif Display', serif; font-size: 1.25rem; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+  nav .logo img { width: 24px; height: 24px; }
+  nav .links { display: flex; gap: 28px; align-items: center; }
+  nav .links a { color: var(--text2); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+  nav .links a:hover { color: var(--text); }
+  nav .links a.cta { background: var(--accent); color: white; padding: 8px 18px; border-radius: 8px; font-weight: 600; }
+  .page-wrapper { max-width: 840px; margin: 0 auto; padding: 60px 24px 100px; }
+  .page-wrapper.wide { max-width: 1100px; }
+  h1 { font-family: 'DM Serif Display', serif; font-size: 2.5rem; font-weight: 400; margin-bottom: 16px; line-height: 1.2; }
+  h2 { font-family: 'DM Serif Display', serif; font-size: 1.6rem; font-weight: 400; margin-top: 48px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--glass-border); }
+  h3 { font-size: 1.15rem; font-weight: 600; margin-top: 32px; margin-bottom: 12px; color: var(--text); }
+  p { margin-bottom: 16px; color: rgba(255,255,255,0.75); }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .subtitle { font-size: 1.1rem; color: var(--text2); margin-bottom: 12px; }
+  strong { color: var(--text); font-weight: 600; }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; background: var(--code-bg); padding: 2px 7px; border-radius: 4px; color: #c4b5fd; }
+  pre { background: var(--code-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 20px 24px; overflow-x: auto; margin: 20px 0 24px; line-height: 1.5; }
+  pre code { background: none; padding: 0; font-size: 0.875rem; color: #d4d4d8; }
+  .code-label { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text3); margin-bottom: -12px; display: block; text-transform: uppercase; letter-spacing: 0.05em; }
+  table { width: 100%; border-collapse: collapse; margin: 20px 0 28px; }
+  th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--glass-border); font-size: 0.9rem; }
+  th { color: var(--text2); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  td { color: rgba(255,255,255,0.7); }
+  td code { font-size: 0.82rem; }
+  .callout { border-left: 3px solid var(--accent); background: var(--accent-dim); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 24px 0; }
+  .callout p { margin-bottom: 0; color: rgba(255,255,255,0.8); }
+  .callout.warn { border-left-color: var(--yellow); background: rgba(251,191,36,0.08); }
+  .callout.success { border-left-color: var(--green); background: rgba(0,214,143,0.08); }
+  ul, ol { margin: 12px 0 20px 24px; color: rgba(255,255,255,0.75); }
+  li { margin-bottom: 8px; }
+  .hero-img { width: 100%; border-radius: 12px; margin-bottom: 32px; }
+  .post-meta { color: var(--text3); font-size: 0.85rem; margin-bottom: 40px; }
+  .blog-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; transition: border-color 0.2s; text-decoration: none; display: block; }
+  .blog-card:hover { border-color: rgba(108,92,231,0.3); text-decoration: none; }
+  .blog-card img { width: 100%; height: 180px; object-fit: cover; }
+  .blog-card .card-body { padding: 20px; }
+  .blog-card h3 { margin: 0 0 8px; font-size: 1.05rem; color: var(--text); }
+  .blog-card p { margin: 0 0 12px; font-size: 0.85rem; color: var(--text2); }
+  .blog-card .meta { font-size: 0.75rem; color: var(--text3); }
+  .blog-card .tag { font-size: 0.7rem; font-weight: 600; color: var(--accent); background: var(--accent-dim); padding: 2px 8px; border-radius: 20px; margin-right: 6px; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; margin: 32px 0; }
+  footer { text-align: center; padding: 40px 24px; border-top: 1px solid var(--glass-border); color: var(--text3); font-size: 0.85rem; }
+  footer a { color: var(--text2); }
+  @media (max-width: 768px) { nav { padding: 14px 20px; } nav .links { gap: 16px; } h1 { font-size: 1.8rem; } .card-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="/"><img src="/favicon.svg" alt="">nightglass</a>
+  <div class="links">
+    <a href="/docs">Docs</a>
+    <a href="/blog" class="active">Blog</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="https://api.nightglass.xyz/dashboard" class="cta">Dashboard</a>
+  </div>
+</nav>
+<div class="page-wrapper">
+<img class="hero-img" src="/images/capture-full-page-screenshots-guide.png" alt="How to capture full-page screenshots programmatically">
+
+<h1>How to capture full-page screenshots programmatically</h1>
+<p class="subtitle">The complete guide to capturing entire scrollable pages as a single image.</p>
+<p class="post-meta">March 28, 2026 · 8 min read</p>
+
+<p>A standard screenshot captures only the visible viewport — typically 1280×720 or 1440×900 pixels. But many pages scroll for thousands of pixels. Full-page capture stitches the entire scrollable content into a single image, giving you the complete visual representation of a page.</p>
+
+<h2>How full-page capture works</h2>
+<p>Modern headless browsers handle this natively. When you set <code>fullPage: true</code>, the browser measures the total scroll height of the page, resizes its internal canvas to match, renders the entire content, and outputs a single image covering the full height.</p>
+<p>Internally, it's not literally scrolling and stitching — the browser renders the full page in one pass at the computed height. This is faster and produces cleaner results than manual scroll-and-stitch approaches.</p>
+
+<h2>Playwright</h2>
+<pre><code>import { chromium } from 'playwright';
+
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+await page.goto('https://example.com', { waitUntil: 'networkidle' });
+await page.screenshot({ path: 'full.png', fullPage: true });
+await browser.close();</code></pre>
+
+<h2>Puppeteer</h2>
+<pre><code>import puppeteer from 'puppeteer';
+
+const browser = await puppeteer.launch();
+const page = await browser.newPage();
+await page.setViewport({ width: 1440, height: 900 });
+await page.goto('https://example.com', { waitUntil: 'networkidle0' });
+await page.screenshot({ path: 'full.png', fullPage: true });
+await browser.close();</code></pre>
+
+<h2>Screenshot API</h2>
+<pre><code>curl -X POST https://api.nightglass.xyz/api/v1/screenshot \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{"url": "https://example.com", "fullPage": true}' \
+  --output fullpage.png</code></pre>
+
+<h2>The lazy loading problem</h2>
+<p>This is the most common gotcha with full-page screenshots. Modern sites lazy-load images — they only fetch images when the user scrolls them into view. In a full-page capture, images below the initial viewport never enter the viewport (the browser renders the full height in one pass), so they remain unloaded.</p>
+<p>The fix: scroll the page before capturing to trigger lazy loading:</p>
+<pre><code>// Scroll the page to trigger lazy loading
+await page.evaluate(async () => {
+  await new Promise((resolve) => {
+    let totalHeight = 0;
+    const distance = 500;
+    const timer = setInterval(() => {
+      window.scrollBy(0, distance);
+      totalHeight += distance;
+      if (totalHeight >= document.body.scrollHeight) {
+        clearInterval(timer);
+        window.scrollTo(0, 0); // Scroll back to top
+        resolve();
+      }
+    }, 100);
+  });
+});
+
+// Now all images are loaded — capture
+await page.screenshot({ path: 'full.png', fullPage: true });</code></pre>
+
+<h2>Infinite scroll pages</h2>
+<p>Some pages load more content as you scroll (social feeds, search results). Full-page capture of these pages will either capture only the initially loaded content or scroll forever. Set a maximum scroll height and accept that you'll capture a finite portion:</p>
+<pre><code>const MAX_HEIGHT = 10000; // Cap at 10,000px
+
+await page.evaluate(async (maxH) => {
+  await new Promise((resolve) => {
+    let totalHeight = 0;
+    const timer = setInterval(() => {
+      window.scrollBy(0, 500);
+      totalHeight += 500;
+      if (totalHeight >= maxH || totalHeight >= document.body.scrollHeight) {
+        clearInterval(timer);
+        window.scrollTo(0, 0);
+        resolve();
+      }
+    }, 200);
+  });
+}, MAX_HEIGHT);</code></pre>
+
+<h2>Fixed headers and footers</h2>
+<p>Pages with <code>position: fixed</code> or <code>position: sticky</code> headers will render the header at every scroll position in a full-page capture, creating duplicated headers throughout the image. Some browsers handle this well, others don't.</p>
+<p>Workaround: inject CSS to change fixed elements to relative or absolute before capturing.</p>
+<pre><code>await page.addStyleTag({
+  content: '* { position: static !important; }'
+});</code></pre>
+<p>This is aggressive — it'll break some layouts. A more targeted approach is to hide specific fixed elements by selector.</p>
+
+<h2>File size considerations</h2>
+<p>Full-page images are large. A page that scrolls for 5000 pixels at 1440px wide at 2x DPR produces a 2880×10000 pixel image — potentially 10–30MB as PNG. Use JPEG for full-page captures unless you specifically need lossless quality. JPEG at quality 80 will be 5–10x smaller than PNG.</p>
+
+<div class="callout">
+  <p>nightglass supports <code>fullPage: true</code> in the API request body, handling the scroll, lazy loading, and capture automatically. See the <a href="/docs/screenshots">screenshot endpoint reference</a>.</p>
+</div>
+
+</div>
+<footer>
+  <p>&copy; 2026 nightglass &middot; <a href="/docs">Docs</a> &middot; <a href="/blog">Blog</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></p>
+</footer>
+</body>
+</html>

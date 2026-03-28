@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script defer src="https://analytics.melis.ai/script.js" data-website-id="bbf3f9ba-7144-4252-8ea9-ebbdee6570d7"></script>
+<title>How to take website screenshots in Go — nightglass</title>
+<meta name="description" content="Three approaches to capturing website screenshots in Go: chromedp, rod, and API.">
+<meta property="og:title" content="How to take website screenshots in Go — nightglass">
+<meta property="og:description" content="Three approaches to capturing website screenshots in Go: chromedp, rod, and API.">
+<meta property="og:url" content="https://nightglass.xyz/blog/take-website-screenshots-in-go">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://nightglass.xyz/images/take-website-screenshots-in-go.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nightglass.xyz/images/take-website-screenshots-in-go.png">
+<link rel="canonical" href="https://nightglass.xyz/blog/take-website-screenshots-in-go">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #030305; --surface: rgba(12, 12, 18, 0.6); --surface-solid: #0a0a10;
+    --glass: rgba(15, 15, 22, 0.45); --glass-border: rgba(255, 255, 255, 0.06);
+    --accent: #6C5CE7; --accent-dim: rgba(108, 92, 231, 0.15);
+    --green: #00D68F; --red: #f87171; --yellow: #fbbf24;
+    --text: #E8E8E4; --text2: rgba(255,255,255,0.45); --text3: rgba(255,255,255,0.2);
+    --code-bg: rgba(5, 5, 10, 0.8);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
+    background: radial-gradient(ellipse 900px 700px at 15% 15%, rgba(108,92,231,0.08) 0%, transparent 55%),
+      radial-gradient(ellipse 600px 500px at 85% 25%, rgba(180,80,50,0.04) 0%, transparent 50%),
+      radial-gradient(ellipse 700px 400px at 55% 85%, rgba(140,60,200,0.04) 0%, transparent 50%); }
+  nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 40px; background: rgba(3,3,5,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); }
+  nav .logo { font-family: 'DM Serif Display', serif; font-size: 1.25rem; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+  nav .logo img { width: 24px; height: 24px; }
+  nav .links { display: flex; gap: 28px; align-items: center; }
+  nav .links a { color: var(--text2); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+  nav .links a:hover { color: var(--text); }
+  nav .links a.cta { background: var(--accent); color: white; padding: 8px 18px; border-radius: 8px; font-weight: 600; }
+  .page-wrapper { max-width: 840px; margin: 0 auto; padding: 60px 24px 100px; }
+  .page-wrapper.wide { max-width: 1100px; }
+  h1 { font-family: 'DM Serif Display', serif; font-size: 2.5rem; font-weight: 400; margin-bottom: 16px; line-height: 1.2; }
+  h2 { font-family: 'DM Serif Display', serif; font-size: 1.6rem; font-weight: 400; margin-top: 48px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--glass-border); }
+  h3 { font-size: 1.15rem; font-weight: 600; margin-top: 32px; margin-bottom: 12px; color: var(--text); }
+  p { margin-bottom: 16px; color: rgba(255,255,255,0.75); }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .subtitle { font-size: 1.1rem; color: var(--text2); margin-bottom: 12px; }
+  strong { color: var(--text); font-weight: 600; }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; background: var(--code-bg); padding: 2px 7px; border-radius: 4px; color: #c4b5fd; }
+  pre { background: var(--code-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 20px 24px; overflow-x: auto; margin: 20px 0 24px; line-height: 1.5; }
+  pre code { background: none; padding: 0; font-size: 0.875rem; color: #d4d4d8; }
+  .code-label { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text3); margin-bottom: -12px; display: block; text-transform: uppercase; letter-spacing: 0.05em; }
+  table { width: 100%; border-collapse: collapse; margin: 20px 0 28px; }
+  th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--glass-border); font-size: 0.9rem; }
+  th { color: var(--text2); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  td { color: rgba(255,255,255,0.7); }
+  td code { font-size: 0.82rem; }
+  .callout { border-left: 3px solid var(--accent); background: var(--accent-dim); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 24px 0; }
+  .callout p { margin-bottom: 0; color: rgba(255,255,255,0.8); }
+  .callout.warn { border-left-color: var(--yellow); background: rgba(251,191,36,0.08); }
+  .callout.success { border-left-color: var(--green); background: rgba(0,214,143,0.08); }
+  ul, ol { margin: 12px 0 20px 24px; color: rgba(255,255,255,0.75); }
+  li { margin-bottom: 8px; }
+  .hero-img { width: 100%; border-radius: 12px; margin-bottom: 32px; }
+  .post-meta { color: var(--text3); font-size: 0.85rem; margin-bottom: 40px; }
+  .blog-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; transition: border-color 0.2s; text-decoration: none; display: block; }
+  .blog-card:hover { border-color: rgba(108,92,231,0.3); text-decoration: none; }
+  .blog-card img { width: 100%; height: 180px; object-fit: cover; }
+  .blog-card .card-body { padding: 20px; }
+  .blog-card h3 { margin: 0 0 8px; font-size: 1.05rem; color: var(--text); }
+  .blog-card p { margin: 0 0 12px; font-size: 0.85rem; color: var(--text2); }
+  .blog-card .meta { font-size: 0.75rem; color: var(--text3); }
+  .blog-card .tag { font-size: 0.7rem; font-weight: 600; color: var(--accent); background: var(--accent-dim); padding: 2px 8px; border-radius: 20px; margin-right: 6px; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; margin: 32px 0; }
+  footer { text-align: center; padding: 40px 24px; border-top: 1px solid var(--glass-border); color: var(--text3); font-size: 0.85rem; }
+  footer a { color: var(--text2); }
+  @media (max-width: 768px) { nav { padding: 14px 20px; } nav .links { gap: 16px; } h1 { font-size: 1.8rem; } .card-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="/"><img src="/favicon.svg" alt="">nightglass</a>
+  <div class="links">
+    <a href="/docs">Docs</a>
+    <a href="/blog" class="active">Blog</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="https://api.nightglass.xyz/dashboard" class="cta">Dashboard</a>
+  </div>
+</nav>
+<div class="page-wrapper">
+<img class="hero-img" src="/images/take-website-screenshots-in-go.png" alt="How to take website screenshots in Go">
+
+<h1>How to take website screenshots in Go</h1>
+<p class="subtitle">chromedp, rod, and the API approach — with working code.</p>
+<p class="post-meta">March 28, 2026 · 8 min read</p>
+
+<p>Go doesn't have a Playwright equivalent with the same polish as the Node.js ecosystem, but there are solid options for headless browser automation. Here are three approaches to taking screenshots in Go, each with different trade-offs.</p>
+
+<h2>1. chromedp</h2>
+<p>chromedp is the most popular Go library for driving Chrome via the DevTools Protocol. It's low-level — closer to Puppeteer's API than Playwright's.</p>
+<span class="code-label">Install</span>
+<pre><code>go get github.com/chromedp/chromedp</code></pre>
+<span class="code-label">main.go</span>
+<pre><code>package main
+
+import (
+    "context"
+    "os"
+    "time"
+
+    "github.com/chromedp/chromedp"
+)
+
+func main() {
+    // Create context with timeout
+    ctx, cancel := chromedp.NewContext(context.Background())
+    defer cancel()
+    ctx, cancel = context.WithTimeout(ctx, 30*time.Second)
+    defer cancel()
+
+    var buf []byte
+    err := chromedp.Run(ctx,
+        chromedp.EmulateViewport(1440, 900),
+        chromedp.Navigate("https://example.com"),
+        chromedp.WaitReady("body"),
+        chromedp.CaptureScreenshot(&amp;buf),
+    )
+    if err != nil {
+        panic(err)
+    }
+
+    os.WriteFile("screenshot.png", buf, 0644)
+}</code></pre>
+<p>chromedp requires Chrome/Chromium installed on the system. It connects via the DevTools Protocol — it doesn't bundle a browser like Playwright does.</p>
+
+<h3>Full-page capture with chromedp</h3>
+<pre><code>import "github.com/chromedp/cdproto/page"
+
+// Full page screenshot requires using the CDP directly
+var buf []byte
+err := chromedp.Run(ctx,
+    chromedp.Navigate("https://example.com"),
+    chromedp.WaitReady("body"),
+    chromedp.ActionFunc(func(ctx context.Context) error {
+        // Get full page metrics
+        _, _, _, _, _, contentSize, err := page.GetLayoutMetrics().Do(ctx)
+        if err != nil { return err }
+
+        // Set viewport to full page height
+        chromedp.EmulateViewport(
+            int64(contentSize.Width),
+            int64(contentSize.Height),
+        ).Do(ctx)
+
+        // Capture
+        buf, err = page.CaptureScreenshot().
+            WithFormat(page.CaptureScreenshotFormatPng).
+            WithCaptureBeyondViewport(true).
+            Do(ctx)
+        return err
+    }),
+)</code></pre>
+
+<h2>2. rod</h2>
+<p>rod is a higher-level alternative to chromedp. It manages the browser lifecycle automatically and has a more ergonomic API.</p>
+<pre><code>go get github.com/go-rod/rod</code></pre>
+<pre><code>package main
+
+import "github.com/go-rod/rod"
+
+func main() {
+    page := rod.New().MustConnect().MustPage("https://example.com")
+    page.MustWindowFullscreen()
+    page.MustWaitStable()
+    page.MustScreenshot("screenshot.png")
+}</code></pre>
+<p>rod auto-downloads a compatible browser binary (like Playwright). The <code>Must*</code> methods panic on error — use the non-Must variants for production code.</p>
+
+<h2>3. Screenshot API</h2>
+<p>The simplest approach — no browser to manage, just HTTP:</p>
+<pre><code>package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "io"
+    "net/http"
+    "os"
+)
+
+func main() {
+    body, _ := json.Marshal(map[string]any{
+        "url":    "https://example.com",
+        "width":  1440,
+        "height": 900,
+    })
+
+    req, _ := http.NewRequest("POST",
+        "https://api.nightglass.xyz/api/v1/screenshot",
+        bytes.NewReader(body))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer YOUR_API_KEY")
+
+    resp, err := http.DefaultClient.Do(req)
+    if err != nil { panic(err) }
+    defer resp.Body.Close()
+
+    f, _ := os.Create("screenshot.png")
+    defer f.Close()
+    io.Copy(f, resp.Body)
+}</code></pre>
+<p>No Chrome to install, no binary management, works in any environment including serverless. At $0.005 per screenshot, it's the cheapest approach when you factor in the cost of managing browser infrastructure.</p>
+
+<h2>Which approach for Go?</h2>
+<table>
+  <tr><th>Approach</th><th>Best for</th><th>Downsides</th></tr>
+  <tr><td>chromedp</td><td>Full browser control, complex interactions</td><td>Low-level API, requires Chrome installed</td></tr>
+  <tr><td>rod</td><td>Simpler API, auto-downloads browser</td><td>Less community support than chromedp</td></tr>
+  <tr><td>Screenshot API</td><td>URL-to-image without infra</td><td>External dependency, costs per call</td></tr>
+</table>
+<p>For most Go applications that just need URL-to-image conversion, the <a href="/docs/quickstart">API approach</a> is the path of least resistance.</p>
+
+</div>
+<footer>
+  <p>&copy; 2026 nightglass &middot; <a href="/docs">Docs</a> &middot; <a href="/blog">Blog</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></p>
+</footer>
+</body>
+</html>

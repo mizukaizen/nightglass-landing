@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script defer src="https://analytics.melis.ai/script.js" data-website-id="bbf3f9ba-7144-4252-8ea9-ebbdee6570d7"></script>
+<title>How to take screenshots with Playwright in Node.js — nightglass</title>
+<meta name="description" content="Complete Playwright screenshot tutorial — install, configure, capture full pages, elements, and viewports.">
+<meta property="og:title" content="How to take screenshots with Playwright in Node.js — nightglass">
+<meta property="og:description" content="Complete Playwright screenshot tutorial — install, configure, capture full pages, elements, and viewports.">
+<meta property="og:url" content="https://nightglass.xyz/blog/playwright-screenshot-tutorial-nodejs">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://nightglass.xyz/images/playwright-screenshot-tutorial-nodejs.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nightglass.xyz/images/playwright-screenshot-tutorial-nodejs.png">
+<link rel="canonical" href="https://nightglass.xyz/blog/playwright-screenshot-tutorial-nodejs">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #030305; --surface: rgba(12, 12, 18, 0.6); --surface-solid: #0a0a10;
+    --glass: rgba(15, 15, 22, 0.45); --glass-border: rgba(255, 255, 255, 0.06);
+    --accent: #6C5CE7; --accent-dim: rgba(108, 92, 231, 0.15);
+    --green: #00D68F; --red: #f87171; --yellow: #fbbf24;
+    --text: #E8E8E4; --text2: rgba(255,255,255,0.45); --text3: rgba(255,255,255,0.2);
+    --code-bg: rgba(5, 5, 10, 0.8);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
+    background: radial-gradient(ellipse 900px 700px at 15% 15%, rgba(108,92,231,0.08) 0%, transparent 55%),
+      radial-gradient(ellipse 600px 500px at 85% 25%, rgba(180,80,50,0.04) 0%, transparent 50%),
+      radial-gradient(ellipse 700px 400px at 55% 85%, rgba(140,60,200,0.04) 0%, transparent 50%); }
+  nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 40px; background: rgba(3,3,5,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); }
+  nav .logo { font-family: 'DM Serif Display', serif; font-size: 1.25rem; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+  nav .logo img { width: 24px; height: 24px; }
+  nav .links { display: flex; gap: 28px; align-items: center; }
+  nav .links a { color: var(--text2); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+  nav .links a:hover { color: var(--text); }
+  nav .links a.cta { background: var(--accent); color: white; padding: 8px 18px; border-radius: 8px; font-weight: 600; }
+  .page-wrapper { max-width: 840px; margin: 0 auto; padding: 60px 24px 100px; }
+  .page-wrapper.wide { max-width: 1100px; }
+  h1 { font-family: 'DM Serif Display', serif; font-size: 2.5rem; font-weight: 400; margin-bottom: 16px; line-height: 1.2; }
+  h2 { font-family: 'DM Serif Display', serif; font-size: 1.6rem; font-weight: 400; margin-top: 48px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--glass-border); }
+  h3 { font-size: 1.15rem; font-weight: 600; margin-top: 32px; margin-bottom: 12px; color: var(--text); }
+  p { margin-bottom: 16px; color: rgba(255,255,255,0.75); }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .subtitle { font-size: 1.1rem; color: var(--text2); margin-bottom: 12px; }
+  strong { color: var(--text); font-weight: 600; }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; background: var(--code-bg); padding: 2px 7px; border-radius: 4px; color: #c4b5fd; }
+  pre { background: var(--code-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 20px 24px; overflow-x: auto; margin: 20px 0 24px; line-height: 1.5; }
+  pre code { background: none; padding: 0; font-size: 0.875rem; color: #d4d4d8; }
+  .code-label { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text3); margin-bottom: -12px; display: block; text-transform: uppercase; letter-spacing: 0.05em; }
+  table { width: 100%; border-collapse: collapse; margin: 20px 0 28px; }
+  th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--glass-border); font-size: 0.9rem; }
+  th { color: var(--text2); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  td { color: rgba(255,255,255,0.7); }
+  td code { font-size: 0.82rem; }
+  .callout { border-left: 3px solid var(--accent); background: var(--accent-dim); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 24px 0; }
+  .callout p { margin-bottom: 0; color: rgba(255,255,255,0.8); }
+  .callout.warn { border-left-color: var(--yellow); background: rgba(251,191,36,0.08); }
+  .callout.success { border-left-color: var(--green); background: rgba(0,214,143,0.08); }
+  ul, ol { margin: 12px 0 20px 24px; color: rgba(255,255,255,0.75); }
+  li { margin-bottom: 8px; }
+  .hero-img { width: 100%; border-radius: 12px; margin-bottom: 32px; }
+  .post-meta { color: var(--text3); font-size: 0.85rem; margin-bottom: 40px; }
+  .blog-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; transition: border-color 0.2s; text-decoration: none; display: block; }
+  .blog-card:hover { border-color: rgba(108,92,231,0.3); text-decoration: none; }
+  .blog-card img { width: 100%; height: 180px; object-fit: cover; }
+  .blog-card .card-body { padding: 20px; }
+  .blog-card h3 { margin: 0 0 8px; font-size: 1.05rem; color: var(--text); }
+  .blog-card p { margin: 0 0 12px; font-size: 0.85rem; color: var(--text2); }
+  .blog-card .meta { font-size: 0.75rem; color: var(--text3); }
+  .blog-card .tag { font-size: 0.7rem; font-weight: 600; color: var(--accent); background: var(--accent-dim); padding: 2px 8px; border-radius: 20px; margin-right: 6px; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; margin: 32px 0; }
+  footer { text-align: center; padding: 40px 24px; border-top: 1px solid var(--glass-border); color: var(--text3); font-size: 0.85rem; }
+  footer a { color: var(--text2); }
+  @media (max-width: 768px) { nav { padding: 14px 20px; } nav .links { gap: 16px; } h1 { font-size: 1.8rem; } .card-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="/"><img src="/favicon.svg" alt="">nightglass</a>
+  <div class="links">
+    <a href="/docs">Docs</a>
+    <a href="/blog" class="active">Blog</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="https://api.nightglass.xyz/dashboard" class="cta">Dashboard</a>
+  </div>
+</nav>
+<div class="page-wrapper">
+<img class="hero-img" src="/images/playwright-screenshot-tutorial-nodejs.png" alt="How to take screenshots with Playwright in Node.js">
+
+<h1>How to take screenshots with Playwright in Node.js</h1>
+<p class="subtitle">The definitive tutorial — from first install to production-grade captures.</p>
+<p class="post-meta">March 28, 2026 · 10 min read</p>
+
+<p>Playwright is Microsoft's open-source browser automation library and it's become the de facto standard for headless browser work in Node.js. If you need to programmatically capture screenshots of web pages, Playwright gives you the most control with the least friction. This tutorial covers everything from installation to advanced capture techniques.</p>
+
+<h2>Installation</h2>
+<p>Playwright ships as an npm package with its own managed browser binaries. This means you don't need to install Chrome separately — Playwright downloads exactly the browser version it's tested against.</p>
+<span class="code-label">Terminal</span>
+<pre><code>npm init -y
+npm install playwright</code></pre>
+<p>Then install the browser binaries:</p>
+<pre><code>npx playwright install chromium</code></pre>
+<p>You can also install <code>firefox</code> or <code>webkit</code>, but Chromium is what you want for screenshots — it matches what most users see in Chrome and Edge.</p>
+
+<h2>Basic screenshot</h2>
+<p>The simplest possible screenshot — launch a browser, navigate to a page, capture it:</p>
+<span class="code-label">JavaScript</span>
+<pre><code>import { chromium } from 'playwright';
+
+const browser = await chromium.launch();
+const page = await browser.newPage();
+await page.goto('https://example.com');
+await page.screenshot({ path: 'screenshot.png' });
+await browser.close();</code></pre>
+<p>This captures the visible viewport (default 1280×720) as a PNG file. The browser runs headless — no visible window opens.</p>
+
+<h2>Setting the viewport</h2>
+<p>The viewport determines the "window size" for the screenshot. Set it when creating a new page:</p>
+<pre><code>const page = await browser.newPage({
+  viewport: { width: 1440, height: 900 }
+});</code></pre>
+<p>Common viewport sizes: <code>1440×900</code> for desktop, <code>1920×1080</code> for full HD, <code>390×844</code> for iPhone 14, <code>768×1024</code> for iPad.</p>
+
+<h2>Full-page screenshots</h2>
+<p>By default, Playwright captures only the visible viewport. To capture the entire scrollable page:</p>
+<pre><code>await page.screenshot({
+  path: 'fullpage.png',
+  fullPage: true
+});</code></pre>
+<p>Full-page captures stitch together the entire scroll height into a single image. Be aware: long pages produce large files. A page that scrolls for 10,000 pixels vertically at 2x DPR produces a 2880×20000 pixel image.</p>
+
+<div class="callout warn">
+  <p><strong>Lazy loading gotcha:</strong> Images below the fold won't load until scrolled into view. Before a full-page capture, scroll the page to trigger lazy loading, then scroll back to top. Playwright doesn't do this automatically.</p>
+</div>
+
+<h2>Element screenshots</h2>
+<p>Capture a specific DOM element instead of the full page:</p>
+<pre><code>const element = await page.locator('.hero-section');
+await element.screenshot({ path: 'hero.png' });</code></pre>
+<p>This crops the output to the element's bounding box. Useful for capturing specific components — a pricing table, a chart, a form.</p>
+
+<h2>Device pixel ratio (Retina)</h2>
+<p>Modern displays render at 2x or 3x resolution. Set <code>deviceScaleFactor</code> to match:</p>
+<pre><code>const page = await browser.newPage({
+  viewport: { width: 1440, height: 900 },
+  deviceScaleFactor: 2
+});</code></pre>
+<p>At 2x DPR, a 1440×900 viewport produces a 2880×1800 pixel image. Higher quality, but larger file size.</p>
+
+<h2>Waiting for the page to load</h2>
+<p>This is where most screenshot automation breaks. Pages aren't "done" when the HTML loads — JavaScript needs to execute, fonts need to render, images need to download. Playwright offers several wait strategies:</p>
+<pre><code>// Wait until network is idle (no requests for 500ms)
+await page.goto(url, { waitUntil: 'networkidle' });
+
+// Wait for a specific element to appear
+await page.waitForSelector('.content-loaded');
+
+// Wait for a specific amount of time after load
+await page.goto(url);
+await page.waitForTimeout(2000);
+
+// Wait for fonts to load
+await page.evaluate(() => document.fonts.ready);</code></pre>
+<p>For most pages, <code>networkidle</code> works well. For SPAs that hydrate slowly, combine it with <code>waitForSelector</code> targeting an element that only appears when the app is ready. The <code>waitForTimeout</code> approach is a blunt instrument but sometimes necessary as a safety buffer.</p>
+
+<h2>Dark mode emulation</h2>
+<p>Capture how a page looks in dark mode without changing system settings:</p>
+<pre><code>const page = await browser.newPage({
+  colorScheme: 'dark'
+});</code></pre>
+<p>This sets the <code>prefers-color-scheme</code> media query to <code>dark</code>, so any page with dark mode CSS will render in its dark variant.</p>
+
+<h2>Output formats</h2>
+<p>Playwright supports PNG and JPEG:</p>
+<pre><code>// PNG (default) — lossless, larger files
+await page.screenshot({ path: 'out.png' });
+
+// JPEG — lossy, smaller files
+await page.screenshot({
+  path: 'out.jpg',
+  type: 'jpeg',
+  quality: 85
+});</code></pre>
+<p>PNG is better for screenshots of text-heavy pages (sharp edges). JPEG is better when file size matters and the content is image-heavy.</p>
+
+<h2>Clip regions</h2>
+<p>Capture a specific rectangle of the page:</p>
+<pre><code>await page.screenshot({
+  path: 'clipped.png',
+  clip: { x: 0, y: 0, width: 800, height: 400 }
+});</code></pre>
+<p>The coordinates are in CSS pixels (before DPR scaling). Useful for capturing above-the-fold content or specific regions without needing element selectors.</p>
+
+<h2>Handling cookie banners and pop-ups</h2>
+<p>Cookie consent banners will appear in your screenshots unless dismissed. Two approaches:</p>
+<pre><code>// Approach 1: Click the accept button
+try {
+  await page.click('[data-testid="cookie-accept"]', { timeout: 3000 });
+} catch (e) {
+  // No cookie banner, continue
+}
+
+// Approach 2: Inject CSS to hide common banner selectors
+await page.addStyleTag({
+  content: `
+    [class*="cookie"], [id*="cookie"],
+    [class*="consent"], [id*="consent"],
+    .cc-banner, #onetrust-banner-sdk { display: none !important; }
+  `
+});</code></pre>
+<p>Neither approach is foolproof across all sites. CSS injection is more reliable because it doesn't depend on specific button selectors.</p>
+
+<h2>Browser context for multiple pages</h2>
+<p>If you're taking many screenshots, reuse the browser and create new pages (not new browsers) for each capture:</p>
+<pre><code>const browser = await chromium.launch();
+
+// Take many screenshots efficiently
+for (const url of urls) {
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  await page.goto(url, { waitUntil: 'networkidle' });
+  await page.screenshot({ path: `screenshots/${slugify(url)}.png` });
+  await page.close(); // Close the page, keep the browser
+}
+
+await browser.close();</code></pre>
+<p>Creating a new page is fast (~50ms). Launching a new browser is slow (~500ms). Reuse the browser.</p>
+
+<h2>When to use an API instead</h2>
+<p>Running Playwright yourself means managing Chromium binaries, handling crashes, dealing with memory leaks, and keeping the browser updated. If you need reliable screenshots without the operational overhead, a screenshot API handles all of this for you.</p>
+<p>With <a href="/docs/quickstart">nightglass</a>, the same screenshot is one HTTP request:</p>
+<pre><code>curl -X POST https://api.nightglass.xyz/api/v1/screenshot \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{"url": "https://example.com", "width": 1440, "height": 900}' \
+  --output screenshot.png</code></pre>
+<p>Half a cent per screenshot, no browser to manage. See the <a href="/docs/quickstart">quickstart guide</a>.</p>
+
+</div>
+<footer>
+  <p>&copy; 2026 nightglass &middot; <a href="/docs">Docs</a> &middot; <a href="/blog">Blog</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></p>
+</footer>
+</body>
+</html>

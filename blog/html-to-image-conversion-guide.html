@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script defer src="https://analytics.melis.ai/script.js" data-website-id="bbf3f9ba-7144-4252-8ea9-ebbdee6570d7"></script>
+<title>HTML to image: 4 ways to convert HTML to PNG — nightglass</title>
+<meta name="description" content="Four approaches to converting HTML to images — client-side, server-side, API, and screenshot.">
+<meta property="og:title" content="HTML to image: 4 ways to convert HTML to PNG — nightglass">
+<meta property="og:description" content="Four approaches to converting HTML to images — client-side, server-side, API, and screenshot.">
+<meta property="og:url" content="https://nightglass.xyz/blog/html-to-image-conversion-guide">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://nightglass.xyz/images/html-to-image-conversion-guide.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nightglass.xyz/images/html-to-image-conversion-guide.png">
+<link rel="canonical" href="https://nightglass.xyz/blog/html-to-image-conversion-guide">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #030305; --surface: rgba(12, 12, 18, 0.6); --surface-solid: #0a0a10;
+    --glass: rgba(15, 15, 22, 0.45); --glass-border: rgba(255, 255, 255, 0.06);
+    --accent: #6C5CE7; --accent-dim: rgba(108, 92, 231, 0.15);
+    --green: #00D68F; --red: #f87171; --yellow: #fbbf24;
+    --text: #E8E8E4; --text2: rgba(255,255,255,0.45); --text3: rgba(255,255,255,0.2);
+    --code-bg: rgba(5, 5, 10, 0.8);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
+    background: radial-gradient(ellipse 900px 700px at 15% 15%, rgba(108,92,231,0.08) 0%, transparent 55%),
+      radial-gradient(ellipse 600px 500px at 85% 25%, rgba(180,80,50,0.04) 0%, transparent 50%),
+      radial-gradient(ellipse 700px 400px at 55% 85%, rgba(140,60,200,0.04) 0%, transparent 50%); }
+  nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 40px; background: rgba(3,3,5,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); }
+  nav .logo { font-family: 'DM Serif Display', serif; font-size: 1.25rem; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+  nav .logo img { width: 24px; height: 24px; }
+  nav .links { display: flex; gap: 28px; align-items: center; }
+  nav .links a { color: var(--text2); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+  nav .links a:hover { color: var(--text); }
+  nav .links a.cta { background: var(--accent); color: white; padding: 8px 18px; border-radius: 8px; font-weight: 600; }
+  .page-wrapper { max-width: 840px; margin: 0 auto; padding: 60px 24px 100px; }
+  .page-wrapper.wide { max-width: 1100px; }
+  h1 { font-family: 'DM Serif Display', serif; font-size: 2.5rem; font-weight: 400; margin-bottom: 16px; line-height: 1.2; }
+  h2 { font-family: 'DM Serif Display', serif; font-size: 1.6rem; font-weight: 400; margin-top: 48px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--glass-border); }
+  h3 { font-size: 1.15rem; font-weight: 600; margin-top: 32px; margin-bottom: 12px; color: var(--text); }
+  p { margin-bottom: 16px; color: rgba(255,255,255,0.75); }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .subtitle { font-size: 1.1rem; color: var(--text2); margin-bottom: 12px; }
+  strong { color: var(--text); font-weight: 600; }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; background: var(--code-bg); padding: 2px 7px; border-radius: 4px; color: #c4b5fd; }
+  pre { background: var(--code-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 20px 24px; overflow-x: auto; margin: 20px 0 24px; line-height: 1.5; }
+  pre code { background: none; padding: 0; font-size: 0.875rem; color: #d4d4d8; }
+  .code-label { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text3); margin-bottom: -12px; display: block; text-transform: uppercase; letter-spacing: 0.05em; }
+  table { width: 100%; border-collapse: collapse; margin: 20px 0 28px; }
+  th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--glass-border); font-size: 0.9rem; }
+  th { color: var(--text2); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  td { color: rgba(255,255,255,0.7); }
+  td code { font-size: 0.82rem; }
+  .callout { border-left: 3px solid var(--accent); background: var(--accent-dim); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 24px 0; }
+  .callout p { margin-bottom: 0; color: rgba(255,255,255,0.8); }
+  .callout.warn { border-left-color: var(--yellow); background: rgba(251,191,36,0.08); }
+  .callout.success { border-left-color: var(--green); background: rgba(0,214,143,0.08); }
+  ul, ol { margin: 12px 0 20px 24px; color: rgba(255,255,255,0.75); }
+  li { margin-bottom: 8px; }
+  .hero-img { width: 100%; border-radius: 12px; margin-bottom: 32px; }
+  .post-meta { color: var(--text3); font-size: 0.85rem; margin-bottom: 40px; }
+  .blog-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; transition: border-color 0.2s; text-decoration: none; display: block; }
+  .blog-card:hover { border-color: rgba(108,92,231,0.3); text-decoration: none; }
+  .blog-card img { width: 100%; height: 180px; object-fit: cover; }
+  .blog-card .card-body { padding: 20px; }
+  .blog-card h3 { margin: 0 0 8px; font-size: 1.05rem; color: var(--text); }
+  .blog-card p { margin: 0 0 12px; font-size: 0.85rem; color: var(--text2); }
+  .blog-card .meta { font-size: 0.75rem; color: var(--text3); }
+  .blog-card .tag { font-size: 0.7rem; font-weight: 600; color: var(--accent); background: var(--accent-dim); padding: 2px 8px; border-radius: 20px; margin-right: 6px; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; margin: 32px 0; }
+  footer { text-align: center; padding: 40px 24px; border-top: 1px solid var(--glass-border); color: var(--text3); font-size: 0.85rem; }
+  footer a { color: var(--text2); }
+  @media (max-width: 768px) { nav { padding: 14px 20px; } nav .links { gap: 16px; } h1 { font-size: 1.8rem; } .card-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="/"><img src="/favicon.svg" alt="">nightglass</a>
+  <div class="links">
+    <a href="/docs">Docs</a>
+    <a href="/blog" class="active">Blog</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="https://api.nightglass.xyz/dashboard" class="cta">Dashboard</a>
+  </div>
+</nav>
+<div class="page-wrapper">
+<img class="hero-img" src="/images/html-to-image-conversion-guide.png" alt="HTML to image: 4 ways to convert HTML to PNG">
+
+<h1>HTML to image: 4 ways to convert HTML to PNG</h1>
+<p class="subtitle">Client-side, server-side, API, and screenshot — when to use each.</p>
+<p class="post-meta">March 28, 2026 · 9 min read</p>
+
+<p>Converting HTML to an image is a deceptively common need. Social cards, email signatures, PDF alternatives, chart exports, receipt generation — any time you need pixel-perfect rendering of styled content as an image file. Here are four approaches, each with different trade-offs.</p>
+
+<h2>1. html2canvas (client-side)</h2>
+<p>html2canvas is a JavaScript library that renders HTML elements to a canvas by re-implementing CSS layout in JavaScript. It runs in the browser — no server needed.</p>
+<pre><code>import html2canvas from 'html2canvas';
+
+const element = document.getElementById('receipt');
+const canvas = await html2canvas(element);
+const dataUrl = canvas.toDataURL('image/png');
+
+// Download it
+const link = document.createElement('a');
+link.download = 'receipt.png';
+link.href = dataUrl;
+link.click();</code></pre>
+<p><strong>Pros:</strong> No server, runs in the browser, captures the page as the user sees it, handles dynamic content and user-specific state.</p>
+<p><strong>Cons:</strong> Doesn't fully implement CSS (flexbox gaps, grid, some transforms fail). No web font support in some cases. Canvas tainted by CORS images. Slow for large elements. Output quality is limited by the screen resolution.</p>
+<p><strong>Best for:</strong> User-facing "export to image" buttons, capturing user-specific views that only exist in the browser.</p>
+
+<h2>2. Playwright or Puppeteer (server-side)</h2>
+<p>Launch a headless browser, load the HTML, take a screenshot. Full CSS support because it's a real browser engine.</p>
+<pre><code>import { chromium } from 'playwright';
+
+async function htmlToImage(html) {
+  const browser = await chromium.launch();
+  const page = await browser.newPage({ viewport: { width: 800, height: 600 } });
+  await page.setContent(html, { waitUntil: 'networkidle' });
+  const buffer = await page.screenshot({ type: 'png' });
+  await browser.close();
+  return buffer;
+}</code></pre>
+<p><strong>Pros:</strong> Perfect CSS rendering (it's a real browser). Supports web fonts, SVG, canvas, everything. Full control over viewport and DPR.</p>
+<p><strong>Cons:</strong> Requires headless browser infrastructure. Each conversion costs ~200–500MB of RAM. Slow cold start if you're not keeping the browser warm. Doesn't work in serverless environments without significant workarounds.</p>
+<p><strong>Best for:</strong> Server-side batch processing where you control the infrastructure and need perfect rendering.</p>
+
+<h2>3. Dedicated HTML-to-image APIs</h2>
+<p>Services like htmlcsstoimage.com accept HTML+CSS input and return an image. They run browsers on their infrastructure so you don't have to.</p>
+<pre><code>const response = await fetch('https://hcti.io/v1/image', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Basic ' + btoa('user:key'),
+  },
+  body: JSON.stringify({
+    html: '&lt;div style="padding:40px;background:purple;color:white"&gt;Hello&lt;/div&gt;',
+    css: '',
+  }),
+});
+const { url } = await response.json();</code></pre>
+<p><strong>Pros:</strong> No browser to manage. Works from any environment. HTML+CSS input means you can template everything server-side.</p>
+<p><strong>Cons:</strong> Limited to HTML string input (can't capture live pages). Another API dependency. Pricing varies.</p>
+<p><strong>Best for:</strong> Generating images from HTML templates — invoices, social cards, certificates, email headers.</p>
+
+<h2>4. Screenshot API (URL-based)</h2>
+<p>Host your HTML as a page (even locally accessible or with data URIs), then screenshot it:</p>
+<pre><code>// Host the HTML at a URL, then capture it
+const response = await fetch(
+  'https://api.nightglass.xyz/api/v1/screenshot',
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer YOUR_API_KEY',
+    },
+    body: JSON.stringify({
+      url: 'https://yoursite.com/templates/invoice?id=12345',
+      width: 800,
+      height: 600,
+    }),
+  }
+);</code></pre>
+<p><strong>Pros:</strong> Full browser rendering. Can capture any URL (not just HTML strings). Same API you'd use for website screenshots. Supports mockup mode, dark mode, device emulation.</p>
+<p><strong>Cons:</strong> Requires the HTML to be hosted at a URL. Slightly higher latency than HTML-string APIs (page has to load).</p>
+<p><strong>Best for:</strong> When you already have the content as a web page and want to capture it as an image. OG image generation, page-to-PDF alternatives, visual snapshots.</p>
+
+<h2>Which should you use?</h2>
+<table>
+  <tr><th>Scenario</th><th>Best approach</th></tr>
+  <tr><td>User clicks "Export" in browser</td><td>html2canvas</td></tr>
+  <tr><td>Batch processing on your server</td><td>Playwright/Puppeteer</td></tr>
+  <tr><td>Generate images from HTML templates</td><td>HTML-to-image API</td></tr>
+  <tr><td>Capture live web pages as images</td><td><a href="/docs/quickstart">Screenshot API</a></td></tr>
+  <tr><td>Serverless environment (Lambda, Vercel)</td><td>Screenshot API (only option)</td></tr>
+</table>
+
+</div>
+<footer>
+  <p>&copy; 2026 nightglass &middot; <a href="/docs">Docs</a> &middot; <a href="/blog">Blog</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></p>
+</footer>
+</body>
+</html>
